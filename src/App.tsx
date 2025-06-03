@@ -18,12 +18,12 @@ const App: React.FC = () => {
     phone: '',
   });
 
-  const handleChange = (e) => {
-    setFormData(prev => ({
-      ...prev,
-      [e.target.name]: e.target.value
-    }));
-  };
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  setFormData(prev => ({
+    ...prev,
+    [e.target.name]: e.target.value
+  }));
+};
 
   useEffect(() => {
     const elements = [];
