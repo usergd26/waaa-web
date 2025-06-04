@@ -292,7 +292,7 @@ const App: React.FC = () => {
                   // Here you would typically send this data to your backend
 
                   try {
-                    const response = await axios.post('https://localhost:44388/getblueprint', formData);
+                    const response = await axios.post('https://waaa-api.onrender.com/getblueprint', formData);
 
                     if(response.status !== 200){
                       throw new Error('API request failed');
