@@ -11,6 +11,7 @@ const App: React.FC = () => {
   const cursorRef = useRef<{ x: number; y: number }>({ x: 0, y: 0 });
   const [floatingElements, setFloatingElements] = useState<Array<{ x: number; y: number; vx: number; vy: number; size: number; opacity: number }>>([]);
   // Initialize floating elements
+  const [loading, setLoading] = useState(false);
 
   const [formData, setFormData] = useState({
     name: '',
@@ -19,11 +20,11 @@ const App: React.FC = () => {
   });
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-  setFormData(prev => ({
-    ...prev,
-    [e.target.name]: e.target.value
-  }));
-};
+    setFormData(prev => ({
+      ...prev,
+      [e.target.name]: e.target.value
+    }));
+  };
 
   useEffect(() => {
     const elements = [];
@@ -287,14 +288,20 @@ const App: React.FC = () => {
               {/* Schedule Call Form */}
               <div id="schedule-call" className="mt-8 p-6 backdrop-blur-lg bg-black bg-opacity-30 rounded-2xl border border-white border-opacity-20">
                 <h3 className="text-xl font-bold mb-4">Schedule a Free Call & Get Our Blueprint</h3>
+                {loading && (
+                  <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+                    <div className="w-12 h-12 border-4 border-white border-t-blue-500 rounded-full animate-spin"></div>
+                  </div>
+                )}
+
                 <form onSubmit={async (e) => {
                   e.preventDefault();
-                  // Here you would typically send this data to your backend
+                  setLoading(true);
 
                   try {
                     const response = await axios.post('https://waaa-api.onrender.com/getblueprint', formData);
 
-                    if(response.status !== 200){
+                    if (response.status !== 200) {
                       throw new Error('API request failed');
                     }
                     alert('Thank you! We will contact you shortly.');
@@ -304,8 +311,9 @@ const App: React.FC = () => {
                     console.error('Error submitting form:', error);
                     alert('Something went wrong. Please try again later.');
                   }
-                  finally{
+                  finally {
                     setFormData({ name: '', email: '', phone: '' });
+                    setLoading(false);
                   }
                 }}>
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-4">
@@ -335,7 +343,6 @@ const App: React.FC = () => {
                     value={formData.phone}
                     onChange={handleChange}
                     className="w-full px-4 py-2 mb-4 bg-black bg-opacity-50 border border-white border-opacity-20 rounded-md text-white focus:outline-none focus:ring-2 focus:ring-pink-500 focus:border-transparent"
-                    required
                   />
                   <button
                     type="submit"
