@@ -4,6 +4,10 @@ import * as echarts from 'echarts';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { Pagination, Autoplay } from 'swiper/modules';
 import axios from 'axios';
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import { Link } from 'react-router-dom';
+import LiveWebinar from './LiveWebinar'; // adjust path as per your structure
+
 const App: React.FC = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isChatOpen, setIsChatOpen] = useState(false);
@@ -179,8 +183,12 @@ const App: React.FC = () => {
     return <span>{prefix}{count}{suffix}</span>;
   };
   return (
-    <div className="min-h-screen bg-gradient-to-br from-black via-purple-900 to-black text-white overflow-x-hidden">
-      {/* Floating Elements */}
+      <Router>
+      <Routes>
+        <Route path="/live-webinar" element={<LiveWebinar />} />
+         <Route path="/" element={
+    <div className="min-h-screen bg-black text-white overflow-x-hidden">
+     Floating Elements
       <div className="fixed inset-0 pointer-events-none z-0">
         {floatingElements.map((el, index) => (
           <div
@@ -198,6 +206,8 @@ const App: React.FC = () => {
           />
         ))}
       </div>
+
+
       {/* Navigation */}
       <nav className="fixed top-0 left-0 w-full z-50 backdrop-blur-md bg-black bg-opacity-20 border-b border-white border-opacity-10">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -217,6 +227,31 @@ const App: React.FC = () => {
                       {item}
                     </a>
                   ))}
+
+                    {/* 🔽 Resource Dropdown */}
+                    <div className="relative group">
+                      <span className="px-3 py-2 rounded-md text-sm font-medium text-white text-opacity-70 hover:text-opacity-100 hover:bg-white hover:bg-opacity-10 transition-all duration-300 cursor-pointer whitespace-nowrap">
+                        Resource
+                      </span>
+                      <div className="absolute top-full left-0 mt-1 w-48 bg-black bg-opacity-90 backdrop-blur-md rounded-md shadow-lg opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none group-hover:pointer-events-auto z-50">
+                        
+                        {/* ✅ Use Link here */}
+                        <Link
+                          to="/live-webinar"
+                          className="block px-4 py-2 text-sm text-white hover:bg-white hover:bg-opacity-10 transition-all duration-200"
+                        >
+                          Live Webinar
+                        </Link>
+
+                        <Link
+                          to="/courses"
+                          className="block px-4 py-2 text-sm text-white hover:bg-white hover:bg-opacity-10 transition-all duration-200"
+                        >
+                          Courses
+                        </Link>
+
+                      </div>
+                    </div>
                 </div>
               </div>
             </div>
@@ -255,14 +290,14 @@ const App: React.FC = () => {
       </nav>
       {/* Hero Section */}
       <section className="relative min-h-screen flex items-center pt-16 overflow-hidden" id="home">
-        <div className="absolute inset-0 z-0">
-          <img
-            src="https://readdy.ai/api/search-image?query=futuristic%20digital%20landscape%20with%20abstract%20geometric%20shapes%2C%20neon%20purple%20and%20blue%20lights%2C%20tech%20particles%20floating%20in%20space%2C%20dark%20background%20with%20glowing%20elements%2C%20modern%20cyberpunk%20aesthetic%2C%208K%20ultra%20HD%2C%20depth%20of%20field&width=1920&height=1080&seq=hero-bg-1&orientation=landscape"
-            alt="Hero Background"
-            className="w-full h-full object-cover object-top"
-          />
-          <div className="absolute inset-0 bg-black bg-opacity-60 backdrop-filter backdrop-blur-sm"></div>
+      <div className="absolute inset-0 z-0">
+        <div className="w-full h-full bg-gradient-to-br from-[#0d0d0d] to-[#1a1a1a]">
+          <div className="absolute inset-0 bg-black bg-opacity-60 backdrop-blur-sm 
+            [background-image:repeating-linear-gradient(0deg,rgba(255,255,255,0.015)_1px,transparent_1px),repeating-linear-gradient(90deg,rgba(255,255,255,0.015)_1px,transparent_1px)] 
+            [background-size:20px_20px]">
+          </div>
         </div>
+      </div>
         <div className="container mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
           <div className="grid md:grid-cols-2 gap-8 items-center">
             <div className="backdrop-blur-lg bg-black bg-opacity-20 p-8 rounded-2xl border border-white border-opacity-10">
@@ -359,55 +394,17 @@ const App: React.FC = () => {
           </div>
         </div>
       </section>
-      {/* Live Statistics Section */}
-      <section className="py-20 relative overflow-hidden" id="stats">
-        <div className="absolute inset-0 z-0">
-          <div className="absolute inset-0 bg-black bg-opacity-80"></div>
-        </div>
-        <div className="container mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-          <div className="text-center mb-16">
-            <h2 className="text-3xl md:text-4xl font-bold mb-4">Live Project Statistics</h2>
-            <p className="text-xl text-gray-300 max-w-3xl mx-auto">
-              Real-time updates on our project delivery metrics and performance indicators
-            </p>
-          </div>
-          <div className="grid grid-cols-1 md:grid-cols-4 gap-6 mb-16">
-            {[
-              { label: 'Projects Delivered', value: 1247, icon: 'fa-rocket' },
-              { label: 'Happy Clients', value: 892, icon: 'fa-smile' },
-              { label: 'Team Members', value: 156, icon: 'fa-users' },
-              { label: 'Awards Won', value: 47, icon: 'fa-trophy' }
-            ].map((stat, index) => (
-              <div
-                key={index}
-                className="backdrop-blur-lg bg-black bg-opacity-20 p-6 rounded-2xl border border-white border-opacity-10 hover:border-opacity-30 transition-all duration-300 transform hover:-translate-y-1"
-              >
-                <div className="flex items-center justify-center w-16 h-16 mx-auto mb-4 rounded-full bg-gradient-to-r from-pink-500 to-blue-500">
-                  <i className={`fas ${stat.icon} text-2xl`}></i>
-                </div>
-                <h3 className="text-3xl md:text-4xl font-bold text-center mb-2">
-                  <Counter end={stat.value} />
-                </h3>
-                <p className="text-center text-gray-300">{stat.label}</p>
-              </div>
-            ))}
-          </div>
-          <div className="backdrop-blur-lg bg-black bg-opacity-20 p-6 rounded-2xl border border-white border-opacity-10">
-            <h3 className="text-2xl font-bold mb-6 text-center">Project Completion by Category</h3>
-            <div ref={statsChartRef} className="w-full h-80"></div>
-          </div>
-        </div>
-      </section>
+
       {/* Services Showcase */}
       <section className="py-20 relative overflow-hidden" id="services">
-        <div className="absolute inset-0 z-0">
-          <img
-            src="https://readdy.ai/api/search-image?query=abstract%20tech%20background%20with%20geometric%20shapes%2C%20dark%20purple%20and%20blue%20gradient%2C%20digital%20particles%2C%20futuristic%20technology%20concept%2C%20minimalist%20design%20with%20subtle%20grid%20pattern%2C%20professional%20lighting%2C%208K%20ultra%20HD&width=1920&height=1080&seq=services-bg-1&orientation=landscape"
-            alt="Services Background"
-            className="w-full h-full object-cover object-top"
-          />
-          <div className="absolute inset-0 bg-black bg-opacity-70 backdrop-filter backdrop-blur-sm"></div>
+      <div className="absolute inset-0 z-0">
+        <div className="w-full h-full bg-gradient-to-br from-[#111111] to-[#1b1b1b]">
+          <div className="absolute inset-0 bg-black bg-opacity-70 backdrop-blur-sm 
+            [background-image:repeating-linear-gradient(0deg,rgba(255,255,255,0.015)_1px,transparent_1px),repeating-linear-gradient(90deg,rgba(255,255,255,0.015)_1px,transparent_1px)] 
+            [background-size:20px_20px]">
+          </div>
         </div>
+      </div>
         <div className="container mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
           <div className="text-center mb-16">
             <h2 className="text-3xl md:text-4xl font-bold mb-4">Our Services</h2>
@@ -440,18 +437,6 @@ const App: React.FC = () => {
                 description: 'Leverage the power of artificial intelligence to enhance your products and services.',
                 icon: 'fa-brain',
                 image: 'https://readdy.ai/api/search-image?query=artificial%20intelligence%20visualization%20with%20neural%20network%2C%20digital%20brain%20concept%20with%20glowing%20connections%2C%20futuristic%20AI%20technology%2C%20purple%20and%20blue%20color%20scheme%2C%20dark%20tech%20background%2C%20professional%203D%20rendering%20with%20depth%20of%20field&width=600&height=400&seq=ai-1&orientation=landscape'
-              },
-              {
-                title: 'UI/UX Design',
-                description: 'Create stunning user interfaces with intuitive experiences that delight your customers.',
-                icon: 'fa-paint-brush',
-                image: 'https://readdy.ai/api/search-image?query=UI%20UX%20design%20concept%20with%20wireframes%20and%20prototypes%2C%20digital%20interface%20elements%2C%20futuristic%20design%20workspace%2C%20purple%20and%20blue%20color%20accents%2C%20dark%20tech%20background%2C%20professional%203D%20rendering%20with%20depth%20of%20field&width=600&height=400&seq=uiux-1&orientation=landscape'
-              },
-              {
-                title: 'Blockchain Solutions',
-                description: 'Develop secure and transparent blockchain applications for various industries.',
-                icon: 'fa-link',
-                image: 'https://readdy.ai/api/search-image?query=blockchain%20technology%20visualization%20with%20connected%20blocks%2C%20digital%20ledger%20concept%2C%20cryptocurrency%20and%20smart%20contracts%2C%20purple%20and%20blue%20neon%20accents%2C%20dark%20tech%20background%2C%20professional%203D%20rendering%20with%20depth%20of%20field&width=600&height=400&seq=blockchain-1&orientation=landscape'
               }
             ].map((service, index) => (
               <div
@@ -485,12 +470,12 @@ const App: React.FC = () => {
       {/* About Us Section */}
       <section className="py-20 relative overflow-hidden" id="about">
         <div className="absolute inset-0 z-0">
-          <img
-            src="https://readdy.ai/api/search-image?query=modern%20office%20interior%20with%20creative%20team%20working%2C%20tech%20startup%20environment%2C%20collaborative%20workspace%20with%20glass%20walls%20and%20digital%20displays%2C%20purple%20and%20blue%20ambient%20lighting%2C%20professional%20photography%20with%20depth%20of%20field%2C%20ultra%20HD&width=1920&height=1080&seq=about-bg-1&orientation=landscape"
-            alt="About Us Background"
-            className="w-full h-full object-cover object-top"
-          />
-          <div className="absolute inset-0 bg-black bg-opacity-70 backdrop-filter backdrop-blur-sm"></div>
+          <div className="w-full h-full bg-gradient-to-br from-[#0f0f0f] to-[#1c1c1c]">
+            <div className="absolute inset-0 bg-black bg-opacity-70 backdrop-blur-sm 
+              [background-image:repeating-linear-gradient(0deg,rgba(255,255,255,0.015)_1px,transparent_1px),repeating-linear-gradient(90deg,rgba(255,255,255,0.015)_1px,transparent_1px)] 
+              [background-size:20px_20px]">
+            </div>
+          </div>
         </div>
         <div className="container mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
           <div className="text-center mb-16">
@@ -542,9 +527,9 @@ const App: React.FC = () => {
                     className="w-full h-48 object-cover rounded-lg mb-6"
                   />
                   <p className="text-gray-300 mb-4">
-                    When TechVision approached us in 2023, they were struggling with outdated systems and declining user engagement. Their challenge: modernize their digital infrastructure while maintaining business continuity.
+                  One of our earliest clients, a small business owner struggling to manage a growing workload, approached us to build a website and automate their daily reports. Within 2 weeks, we built a dynamic platform that not only handled their sales tracking but also saved them 5+ hours a day through smart automation. Today, they've scaled their business 3x — and we're still just one message away for anything they need.That's WAAA. Always there. Always evolving. Always delivering.
                   </p>
-                  <p className="text-gray-300 mb-4">
+                  {/* <p className="text-gray-300 mb-4">
                     Our solution combined cutting-edge web development with AI integration, resulting in:
                   </p>
                   <ul className="space-y-2 text-gray-300 mb-6">
@@ -560,7 +545,7 @@ const App: React.FC = () => {
                       <i className="fas fa-check-circle text-pink-500 mr-2"></i>
                       95% improvement in system performance
                     </li>
-                  </ul>
+                  </ul> */}
                   <div className="flex justify-end">
                     <button className="bg-gradient-to-r from-pink-500 to-blue-500 text-white px-6 py-3 rounded-md font-medium hover:from-pink-600 hover:to-blue-600 transition-all duration-300 cursor-pointer !rounded-button whitespace-nowrap">
                       Read Full Case Study
@@ -599,7 +584,7 @@ const App: React.FC = () => {
           </div>
         </div>
       </section>
-      {/* Projects Section */}
+      {/* Projects Section
       <section className="py-20 relative overflow-hidden" id="projects">
         <div className="absolute inset-0 z-0">
           <img
@@ -703,10 +688,12 @@ const App: React.FC = () => {
             </button>
           </div>
         </div>
-      </section>
+      </section> */}
+
+
       {/* Testimonials Section */}
       <section className="py-20 relative overflow-hidden" id="testimonials">
-        <div className="absolute inset-0 z-0 bg-gradient-to-b from-purple-900 to-black"></div>
+        <div className="absolute inset-0 z-0 bg-gradient-to-b from-[#1a1a1a] to-black "></div>
         <div className="container mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
           <div className="text-center mb-16">
             <h2 className="text-3xl md:text-4xl font-bold mb-4">Client Testimonials</h2>
@@ -774,12 +761,12 @@ const App: React.FC = () => {
       {/* Contact Form */}
       <section className="py-20 relative overflow-hidden" id="contact">
         <div className="absolute inset-0 z-0">
-          <img
-            src="https://readdy.ai/api/search-image?query=futuristic%20contact%20center%20with%20holographic%20interfaces%2C%20digital%20communication%20concept%2C%20purple%20and%20blue%20neon%20lights%2C%20dark%20tech%20environment%2C%20professional%203D%20rendering%20with%20depth%20of%20field%2C%20ultra%20HD%20quality&width=1920&height=1080&seq=contact-bg-1&orientation=landscape"
-            alt="Contact Background"
-            className="w-full h-full object-cover object-top"
-          />
-          <div className="absolute inset-0 bg-black bg-opacity-80 backdrop-filter backdrop-blur-sm"></div>
+          <div className="w-full h-full bg-gradient-to-br from-[#121212] to-[#1f1f1f]">
+            <div className="absolute inset-0 bg-black bg-opacity-80 backdrop-blur-sm 
+              [background-image:repeating-linear-gradient(0deg,rgba(255,255,255,0.015)_1px,transparent_1px),repeating-linear-gradient(90deg,rgba(255,255,255,0.015)_1px,transparent_1px)] 
+              [background-size:20px_20px]">
+            </div>
+          </div>
         </div>
         <div className="container mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
           <div className="text-center mb-16">
@@ -848,8 +835,7 @@ const App: React.FC = () => {
                   <div>
                     <h4 className="text-lg font-medium mb-1">Our Locations</h4>
                     <p className="text-gray-300">
-                      123 Innovation Drive, Tech Hub, San Francisco, CA 94107<br />
-                      42 Tech Park, Electronic City, Bangalore 560100
+                      Bangalore 
                     </p>
                   </div>
                 </div>
@@ -857,13 +843,17 @@ const App: React.FC = () => {
                   <div className="w-10 h-10 rounded-full bg-gradient-to-r from-pink-500 to-blue-500 flex items-center justify-center mr-4 flex-shrink-0">
                     <i className="fas fa-phone-alt"></i>
                   </div>
-                  <div>
-                    <h4 className="text-lg font-medium mb-1">Phone Numbers</h4>
-                    <p className="text-gray-300">
-                      US: +1 (555) 123-4567<br />
-                      India: +91 708-666-5218
-                    </p>
-                  </div>
+                    <div>
+                      <h4 className="text-lg font-medium mb-1">Phone Numbers</h4>
+                      <ul className="text-gray-300">
+                        <li>
+                          India: <a href="tel:+917086665218" className="hover:underline">+91 708-666-5218</a>
+                        </li>
+                        <li>
+                          <a href="tel:+918767854868" className="hover:underline">+91 876-785-4868</a>
+                        </li>
+                      </ul>
+                    </div>
                 </div>
                 <div className="flex items-start">
                   <div className="w-10 h-10 rounded-full bg-gradient-to-r from-pink-500 to-blue-500 flex items-center justify-center mr-4 flex-shrink-0">
@@ -871,7 +861,7 @@ const App: React.FC = () => {
                   </div>
                   <div>
                     <h4 className="text-lg font-medium mb-1">Email Address</h4>
-                    <p className="text-gray-300">info@waaa.tech</p>
+                    <p className="text-gray-300">team@waaa.in</p>
                   </div>
                 </div>
               </div>
@@ -917,7 +907,7 @@ const App: React.FC = () => {
             <div>
               <h4 className="text-lg font-bold mb-4">Services</h4>
               <ul className="space-y-2">
-                {['Web Development', 'API Integration', 'Automation', 'AI Integration', 'UI/UX Design', 'Blockchain Solutions'].map((item, index) => (
+                {['Web Development', 'API Integration', 'Automation', 'AI Integration'].map((item, index) => (
                   <li key={index}>
                     <a href="#" className="text-gray-400 hover:text-white transition-colors duration-300 cursor-pointer">
                       {item}
@@ -1022,6 +1012,10 @@ const App: React.FC = () => {
         )}
       </div>
     </div>
+         }
+         />
+      </Routes>
+    </Router>
   );
 };
 export default App
