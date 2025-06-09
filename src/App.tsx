@@ -347,11 +347,11 @@ const App: React.FC = () => {
         <div className="absolute inset-0 z-0 overflow-hidden">
         {/* Sliding Image Background */}
         <div className="absolute w-[500%] h-full flex animate-slide">
-          <img src="src/assets/images/bg1.jpg" className="w-[20%] object-cover h-full" alt="bg1" />
-          <img src="src/assets/images/bg2.jpg" className="w-[20%] object-cover h-full" alt="bg2" />
-          <img src="src/assets/images/bg3.jpg" className="w-[20%] object-cover h-full" alt="bg3" />
-          <img src="src/assets/images/bg4.jpg" className="w-[20%] object-cover h-full" alt="bg4" />
-          <img src="src/assets/images/bg5.jpg" className="w-[20%] object-cover h-full" alt="bg5" />
+          <img src="./src/assets/images/bg1.jpg" className="w-[20%] object-cover h-full" alt="bg1" />
+          <img src="./src/assets/images/bg2.jpg" className="w-[20%] object-cover h-full" alt="bg2" />
+          <img src="./src/assets/images/bg3.jpg" className="w-[20%] object-cover h-full" alt="bg3" />
+          <img src="./src/assets/images/bg4.jpg" className="w-[20%] object-cover h-full" alt="bg4" />
+          <img src="./src/assets/images/bg5.jpg" className="w-[20%] object-cover h-full" alt="bg5" />
       </div>
 
       {/* Overlay (dark blur with grid effect) */}
