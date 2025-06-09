@@ -8,6 +8,13 @@ import axios from 'axios';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import { Link } from 'react-router-dom';
 import LiveWebinar from './LiveWebinar'; // adjust path as per your structure
+import bg1 from './assets/images/bg1.jpg';
+import bg2 from './assets/images/bg2.jpg';
+import bg3 from './assets/images/bg3.jpg';
+import bg4 from './assets/images/bg4.jpg';
+import bg5 from './assets/images/bg5.jpg';
+
+
 
 const App: React.FC = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -347,11 +354,11 @@ const App: React.FC = () => {
         <div className="absolute inset-0 z-0 overflow-hidden">
         {/* Sliding Image Background */}
         <div className="absolute w-[500%] h-full flex animate-slide">
-          <img src="./src/assets/images/bg1.jpg" className="w-[20%] object-cover h-full" alt="bg1" />
-          <img src="./src/assets/images/bg2.jpg" className="w-[20%] object-cover h-full" alt="bg2" />
-          <img src="./src/assets/images/bg3.jpg" className="w-[20%] object-cover h-full" alt="bg3" />
-          <img src="./src/assets/images/bg4.jpg" className="w-[20%] object-cover h-full" alt="bg4" />
-          <img src="./src/assets/images/bg5.jpg" className="w-[20%] object-cover h-full" alt="bg5" />
+          <img src= {bg1} className="w-[20%] object-cover h-full" alt="bg1" />
+          <img src= {bg2} className="w-[20%] object-cover h-full" alt="bg2" />
+          <img src= {bg3} className="w-[20%] object-cover h-full" alt="bg3" />
+          <img src= {bg4} className="w-[20%] object-cover h-full" alt="bg4" />
+          <img src= {bg5} className="w-[20%] object-cover h-full" alt="bg5" />
       </div>
 
       {/* Overlay (dark blur with grid effect) */}
