@@ -1,6 +1,7 @@
 // The exported code uses Tailwind CSS. Install Tailwind CSS in your dev environment to ensure all styles work.
 import React, { useState, useEffect, useRef } from 'react';
 import * as echarts from 'echarts';
+import { motion} from 'framer-motion';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { Pagination, Autoplay } from 'swiper/modules';
 import axios from 'axios';
@@ -72,6 +73,28 @@ const App: React.FC = () => {
     const animationId = requestAnimationFrame(animateElements);
     return () => cancelAnimationFrame(animationId);
   }, []);
+
+
+
+
+  //Testimonial one-by-one staggered animation
+    const testimonialContainer = {
+    hidden: {},
+    visible: {
+      transition: {
+        staggerChildren: 0.3,
+      },
+     },
+    };
+
+    const testimonialItem = {
+      hidden: { opacity: 0, y: 20 },
+      visible: { opacity: 1, y: 0 },
+    };
+
+
+
+
   // Track cursor position
   useEffect(() => {
     const handleMouseMove = (e: MouseEvent) => {
@@ -80,6 +103,29 @@ const App: React.FC = () => {
     window.addEventListener('mousemove', handleMouseMove);
     return () => window.removeEventListener('mousemove', handleMouseMove);
   }, []);
+
+   // framer-motion
+      const fadeInUp = {
+      hidden: { opacity: 0, y: 40 },
+      visible: { opacity: 1, y: 0 },
+    };
+
+    const fadeLeft = {
+      hidden: { opacity: 0, x: -40 },
+      visible: { opacity: 1, x: 0 },
+    };
+
+    const fadeRight = {
+      hidden: { opacity: 0, x: 40 },
+      visible: { opacity: 1, x: 0 },
+    };
+
+    const zoomIn = {
+      hidden: { opacity: 0, scale: 0.9 },
+      visible: { opacity: 1, scale: 1 },
+    };
+    
+
   // Initialize stats chart
   useEffect(() => {
     if (statsChartRef.current) {
@@ -188,7 +234,7 @@ const App: React.FC = () => {
         <Route path="/live-webinar" element={<LiveWebinar />} />
          <Route path="/" element={
     <div className="min-h-screen bg-black text-white overflow-x-hidden">
-     Floating Elements
+     {/* Floating Elements */}
       <div className="fixed inset-0 pointer-events-none z-0">
         {floatingElements.map((el, index) => (
           <div
@@ -289,21 +335,40 @@ const App: React.FC = () => {
         </div>
       </nav>
       {/* Hero Section */}
-      <section className="relative min-h-screen flex items-center pt-16 overflow-hidden" id="home">
-      <div className="absolute inset-0 z-0">
-        <div className="w-full h-full bg-gradient-to-br from-[#0d0d0d] to-[#1a1a1a]">
-          <div className="absolute inset-0 bg-black bg-opacity-60 backdrop-blur-sm 
-            [background-image:repeating-linear-gradient(0deg,rgba(255,255,255,0.015)_1px,transparent_1px),repeating-linear-gradient(90deg,rgba(255,255,255,0.015)_1px,transparent_1px)] 
-            [background-size:20px_20px]">
-          </div>
-        </div>
+<motion.section
+  className="relative min-h-screen flex items-center pt-16 overflow-hidden bg-white text-black"
+  id="home"
+  initial="hidden"
+  whileInView="visible"
+  viewport={{ once: true, amount: 0.3 }}
+  transition={{ duration: 0.6 }}
+  variants={fadeInUp}
+>
+        <div className="absolute inset-0 z-0 overflow-hidden">
+        {/* Sliding Image Background */}
+        <div className="absolute w-[500%] h-full flex animate-slide">
+          <img src="/images/bg1.jpg" className="w-[20%] object-cover h-full" alt="bg1" />
+          <img src="/images/bg2.jpg" className="w-[20%] object-cover h-full" alt="bg2" />
+          <img src="/images/bg3.jpg" className="w-[20%] object-cover h-full" alt="bg3" />
+          <img src="/images/bg4.jpg" className="w-[20%] object-cover h-full" alt="bg4" />
+          <img src="/images/bg5.jpg" className="w-[20%] object-cover h-full" alt="bg5" />
       </div>
+
+      {/* Overlay (dark blur with grid effect) */}
+      <div className="absolute inset-0 bg-black bg-opacity-60 backdrop-blur-sm 
+        [background-image:repeating-linear-gradient(0deg,rgba(255,255,255,0.015)_1px,transparent_1px),repeating-linear-gradient(90deg,rgba(255,255,255,0.015)_1px,transparent_1px)] 
+        [background-size:20px_20px]">
+      </div>
+      </div>
+
+
+
         <div className="container mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
           <div className="grid md:grid-cols-2 gap-8 items-center">
             <div className="backdrop-blur-lg bg-black bg-opacity-20 p-8 rounded-2xl border border-white border-opacity-10">
               <h1 className="text-4xl md:text-5xl lg:text-6xl font-extrabold mb-4">
                 <span className="block bg-clip-text text-transparent bg-gradient-to-r from-pink-500 to-blue-500 animate-pulse">Ultra-Modern</span>
-                <span className="block mt-2">Digital Experiences</span>
+                <span className="block mt-2 text-white">Digital Experiences</span>
               </h1>
               <p className="text-xl text-gray-300 mb-8">
                 You dream it. We build it. Let's make the future happen — together at WAAA.
@@ -322,7 +387,7 @@ const App: React.FC = () => {
               </div>
               {/* Schedule Call Form */}
               <div id="schedule-call" className="mt-8 p-6 backdrop-blur-lg bg-black bg-opacity-30 rounded-2xl border border-white border-opacity-20">
-                <h3 className="text-xl font-bold mb-4">Schedule a Free Call & Get Our Blueprint</h3>
+                <h3 className="text-xl font-bold mb-4 text-white">Schedule a Free Call & Get Our Blueprint</h3>
                 {loading && (
                   <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
                     <div className="w-12 h-12 border-4 border-white border-t-blue-500 rounded-full animate-spin"></div>
@@ -393,44 +458,44 @@ const App: React.FC = () => {
             </div>
           </div>
         </div>
-      </section>
+      </motion.section>
 
       {/* Services Showcase */}
-      <section className="py-20 relative overflow-hidden" id="services">
-      <div className="absolute inset-0 z-0">
-        <div className="w-full h-full bg-gradient-to-br from-[#111111] to-[#1b1b1b]">
-          <div className="absolute inset-0 bg-black bg-opacity-70 backdrop-blur-sm 
-            [background-image:repeating-linear-gradient(0deg,rgba(255,255,255,0.015)_1px,transparent_1px),repeating-linear-gradient(90deg,rgba(255,255,255,0.015)_1px,transparent_1px)] 
-            [background-size:20px_20px]">
-          </div>
-        </div>
-      </div>
-        <div className="container mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-          <div className="text-center mb-16">
-            <h2 className="text-3xl md:text-4xl font-bold mb-4">Our Services</h2>
-            <p className="text-xl text-gray-300 max-w-3xl mx-auto">
-              Cutting-edge digital solutions powered by the latest technologies
+<motion.section
+  className="py-20 bg-gradient-to-br from-white to-gray-100 text-black"
+  id="services"
+  initial="hidden"
+  whileInView="visible"
+  viewport={{ once: true, amount: 0.3 }}
+  transition={{ duration: 0.6 }}
+  variants={fadeLeft}
+>
+          <div className="container mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+            <div className="text-center mb-16">
+            <h2 className="text-3xl md:text-4xl font-bold mb-4 text-gray-900">Our Services</h2>
+            <p className="text-xl text-gray-600 max-w-3xl mx-auto">
+                Cutting-edge digital solutions powered by the latest technologies
             </p>
-          </div>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+            </div>
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
             {[
               {
                 title: 'Web Development',
                 description: 'Modern, responsive websites with cutting-edge technologies and immersive user experiences.',
                 icon: 'fa-code',
-                image: 'https://readdy.ai/api/search-image?query=modern%20website%20interface%20with%20glowing%20elements%2C%20digital%20code%20visualization%2C%20futuristic%20web%20development%20concept%2C%20purple%20and%20blue%20neon%20accents%2C%20dark%20background%20with%20tech%20elements%2C%20professional%203D%20rendering%2C%20ultra%20HD&width=600&height=400&seq=web-dev-1&orientation=landscape'
+                image: '/images/web-dev.jpeg'   
               },
               {
                 title: 'API Integration',
                 description: 'Seamless integration of third-party APIs and development of custom API solutions.',
                 icon: 'fa-plug',
-                image: 'https://readdy.ai/api/search-image?query=api%20integration%20concept%20visualization%2C%20connected%20nodes%20with%20data%20flow%2C%20digital%20network%20with%20glowing%20connection%20lines%2C%20futuristic%20tech%20interface%2C%20purple%20and%20blue%20color%20scheme%2C%20dark%20background%20with%20tech%20elements%2C%20professional%203D%20rendering&width=600&height=400&seq=api-1&orientation=landscape'
+                image: '/images/api.jpg'
               },
               {
                 title: 'Automation',
                 description: 'Streamline your workflows with intelligent automation solutions that save time and resources.',
                 icon: 'fa-robot',
-                image: 'https://readdy.ai/api/search-image?query=automation%20concept%20with%20robotic%20arms%20and%20digital%20workflow%2C%20futuristic%20factory%20automation%20visualization%2C%20purple%20and%20blue%20neon%20lights%2C%20dark%20tech%20background%2C%20professional%203D%20rendering%20with%20depth%20of%20field%2C%20ultra%20HD&width=600&height=400&seq=automation-1&orientation=landscape'
+                image: '/images/automation.jpg'
               },
               {
                 title: 'AI Integration',
@@ -441,24 +506,26 @@ const App: React.FC = () => {
             ].map((service, index) => (
               <div
                 key={index}
-                className="backdrop-blur-lg bg-black bg-opacity-20 rounded-2xl border border-white border-opacity-10 overflow-hidden group hover:border-opacity-30 transition-all duration-500 transform hover:-translate-y-2"
-              >
+                className="bg-white rounded-2xl shadow-md overflow-hidden group hover:shadow-lg transition-all duration-500 transform hover:-translate-y-2"
+                >
                 <div className="h-48 overflow-hidden">
-                  <img
-                    src={service.image}
-                    alt={service.title}
-                    className="w-full h-full object-cover object-top transition-transform duration-700 group-hover:scale-110"
-                  />
+                  
+                <img
+                  src={service.image}
+                  alt={service.title}
+                  className="w-full h-60 object-cover rounded-lg object-top transition-transform duration-700 group-hover:scale-110"
+                />
+
                 </div>
                 <div className="p-6">
                   <div className="flex items-center mb-4">
                     <div className="w-10 h-10 rounded-full bg-gradient-to-r from-pink-500 to-blue-500 flex items-center justify-center mr-3">
                       <i className={`fas ${service.icon}`}></i>
                     </div>
-                    <h3 className="text-xl font-bold">{service.title}</h3>
+                    <h3 className="text-xl font-bold text-gray-900">{service.title}</h3>
                   </div>
-                  <p className="text-gray-300 mb-4">{service.description}</p>
-                  <a href="#" className="inline-flex items-center text-pink-400 hover:text-pink-300 transition-colors duration-300 cursor-pointer">
+                  <p className="text-gray-600 mb-4">{service.description}</p>
+                  <a href="#" className="inline-flex items-center text-blue-600 hover:text-blue-500 transition-colors duration-300 cursor-pointer">
                     Learn more <i className="fas fa-arrow-right ml-2"></i>
                   </a>
                 </div>
@@ -466,10 +533,18 @@ const App: React.FC = () => {
             ))}
           </div>
         </div>
-      </section>
+      </motion.section>
       {/* About Us Section */}
-      <section className="py-20 relative overflow-hidden" id="about">
-        <div className="absolute inset-0 z-0">
+<motion.section
+  className="py-20 relative overflow-hidden bg-white text-black"
+  id="about"
+  initial="hidden"
+  whileInView="visible"
+  viewport={{ once: true, amount: 0.3 }}
+  transition={{ duration: 0.6 }}
+  variants={fadeRight}
+>
+          <div className="absolute inset-0 z-0">
           <div className="w-full h-full bg-gradient-to-br from-[#0f0f0f] to-[#1c1c1c]">
             <div className="absolute inset-0 bg-black bg-opacity-70 backdrop-blur-sm 
               [background-image:repeating-linear-gradient(0deg,rgba(255,255,255,0.015)_1px,transparent_1px),repeating-linear-gradient(90deg,rgba(255,255,255,0.015)_1px,transparent_1px)] 
@@ -479,7 +554,7 @@ const App: React.FC = () => {
         </div>
         <div className="container mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
           <div className="text-center mb-16">
-            <h2 className="text-3xl md:text-4xl font-bold mb-4">Our Journey</h2>
+            <h2 className="text-3xl md:text-4xl font-bold mb-4 text-gray-100">Our Journey</h2>
             <p className="text-xl text-gray-300 max-w-3xl mx-auto">
               From startup to industry leader: Our story of innovation and success
             </p>
@@ -519,7 +594,7 @@ const App: React.FC = () => {
             <div className="relative">
               <div className="absolute -inset-4 bg-gradient-to-r from-pink-500 to-blue-500 rounded-2xl opacity-30 blur-lg"></div>
               <div className="relative backdrop-blur-lg bg-black bg-opacity-20 p-8 rounded-2xl border border-white border-opacity-10">
-                <h3 className="text-2xl font-bold mb-6">Success Story: TechVision Transformation</h3>
+                <h3 className="text-2xl font-bold mb-6 text-gray-100">Success Story: TechVision Transformation</h3>
                 <div className="mb-6">
                   <img
                     src="https://readdy.ai/api/search-image?query=modern%20tech%20company%20office%20transformation%2C%20before%20and%20after%20visualization%2C%20digital%20workspace%20evolution%2C%20sleek%20design%20with%20purple%20and%20blue%20accents%2C%20professional%20business%20environment%2C%20high%20quality%20corporate%20photography&width=800&height=400&seq=success-story-1&orientation=landscape"
@@ -555,7 +630,7 @@ const App: React.FC = () => {
               </div>
             </div>
           </div>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+          <div className="grid grid-cols-1 text-gray-100 md:grid-cols-3 gap-8">
             {[
               {
                 title: 'Our Mission',
@@ -583,7 +658,7 @@ const App: React.FC = () => {
             ))}
           </div>
         </div>
-      </section>
+      </motion.section>
       {/* Projects Section
       <section className="py-20 relative overflow-hidden" id="projects">
         <div className="absolute inset-0 z-0">
@@ -692,74 +767,94 @@ const App: React.FC = () => {
 
 
       {/* Testimonials Section */}
-      <section className="py-20 relative overflow-hidden" id="testimonials">
-        <div className="absolute inset-0 z-0 bg-gradient-to-b from-[#1a1a1a] to-black "></div>
-        <div className="container mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-          <div className="text-center mb-16">
-            <h2 className="text-3xl md:text-4xl font-bold mb-4">Client Testimonials</h2>
-            <p className="text-xl text-gray-300 max-w-3xl mx-auto">
-              Hear what our clients have to say about their experience working with us
-            </p>
+<motion.section
+  id="testimonials"
+  className="py-20 relative overflow-hidden bg-white text-black"
+  initial="hidden"
+  whileInView="visible"
+  viewport={{ once: false, amount: 0.3 }}
+  transition={{ duration: 0.6 }}
+  variants={zoomIn}
+>
+  <div className="container mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+    <div className="text-center mb-16">
+      <h2 className="text-3xl md:text-4xl font-bold mb-4 text-black">Client Testimonials</h2>
+      <p className="text-xl text-gray-700 max-w-3xl mx-auto">
+        Hear what our clients have to say about their experience working with us
+      </p>
+    </div>
+    <motion.div
+      variants={testimonialContainer}
+      initial="hidden"
+      whileInView="visible"
+      viewport={{ once: false, amount: 0.3 }}
+      className="max-w-5xl mx-auto grid grid-cols-1 gap-8"
+    >
+      {[{
+        name: 'Sarah Johnson',
+        position: 'CEO, TechVision',
+        image: 'https://readdy.ai/api/search-image?query=professional%20headshot%20of%20confident%20female%20CEO%20with%20modern%20business%20attire%2C%20neutral%20expression%2C%20studio%20lighting%2C%20clean%20background%2C%20high%20quality%20portrait%2C%20professional%20photography%2C%20realistic&width=200&height=200&seq=testimonial-1&orientation=squarish',
+        quote: 'Working with Waaa has been a game-changer for our business. Their innovative approach to web development and AI integration has helped us stay ahead of the competition.',
+      },
+      {
+        name: 'Michael Chen',
+        position: 'CTO, Innovate Labs',
+        image: 'https://readdy.ai/api/search-image?query=professional%20headshot%20of%20confident%20male%20CTO%20with%20modern%20business%20attire%2C%20neutral%20expression%2C%20studio%20lighting%2C%20clean%20background%2C%20high%20quality%20portrait%2C%20professional%20photography%2C%20realistic&width=200&height=200&seq=testimonial-2&orientation=squarish',
+        quote: "The automation solutions provided by Waaa have revolutionized our internal processes. We've seen a 40% increase in productivity and significant cost savings.",
+      },
+      {
+        name: 'Emily Rodriguez',
+        position: 'Marketing Director, GrowthX',
+        image: 'https://readdy.ai/api/search-image?query=professional%20headshot%20of%20confident%20female%20marketing%20director%20with%20modern%20business%20attire%2C%20neutral%20expression%2C%20studio%20lighting%2C%20clean%20background%2C%20high%20quality%20portrait%2C%20professional%20photography%2C%20realistic&width=200&height=200&seq=testimonial-3&orientation=squarish', 
+        quote: 'The UI/UX design work that Waaa delivered exceeded our expectations. Our website conversion rate has increased by 35% since the redesign.',
+      },
+      {
+        name: 'Amit Verma',
+        position: 'Founder, CodeCraft',
+        image: 'https://images.unsplash.com/photo-1527980965255-d3b416303d12?fit=crop&w=200&h=200',
+        quote: 'Waaa helped us integrate AI into our product pipeline and we’ve seen tremendous improvements in user engagement and support efficiency.',
+      }].map((testimonial, index) => (
+        <motion.div
+          key={index}
+          variants={testimonialItem}
+          className="bg-gray-100 p-8 md:p-10 rounded-2xl border border-gray-300 shadow-sm"
+        >
+          <div className="flex flex-col md:flex-row items-center md:items-start gap-6">
+            <div className="w-24 h-24 rounded-full overflow-hidden flex-shrink-0 border-2 border-gray-400">
+              <img
+                src={testimonial.image}
+                alt={testimonial.name}
+                className="w-full h-full object-cover"
+              />
+            </div>
+            <div>
+              <div className="text-gray-500 mb-4">
+                <i className="fas fa-quote-left text-3xl opacity-50"></i>
+              </div>
+              <p className="text-lg mb-6 italic text-gray-800">"{testimonial.quote}"</p>
+              <div>
+                <h4 className="text-xl font-bold text-black">{testimonial.name}</h4>
+                <p className="text-gray-600">{testimonial.position}</p>
+              </div>
+            </div>
           </div>
-          <div className="max-w-5xl mx-auto">
-            <Swiper
-              modules={[Pagination, Autoplay]}
-              pagination={{ clickable: true }}
-              autoplay={{ delay: 5000, disableOnInteraction: false }}
-              spaceBetween={30}
-              slidesPerView={1}
-              className="testimonial-swiper"
-            >
-              {[
-                {
-                  name: 'Sarah Johnson',
-                  position: 'CEO, TechVision',
-                  image: 'https://readdy.ai/api/search-image?query=professional%20headshot%20of%20confident%20female%20CEO%20with%20modern%20business%20attire%2C%20neutral%20expression%2C%20studio%20lighting%2C%20clean%20background%2C%20high%20quality%20portrait%2C%20professional%20photography%2C%20realistic&width=200&height=200&seq=testimonial-1&orientation=squarish',
-                  quote: 'Working with Waaa has been a game-changer for our business. Their innovative approach to web development and AI integration has helped us stay ahead of the competition. The team is responsive, creative, and technically brilliant.'
-                },
-                {
-                  name: 'Michael Chen',
-                  position: 'CTO, Innovate Labs',
-                  image: 'https://readdy.ai/api/search-image?query=professional%20headshot%20of%20confident%20male%20CTO%20with%20modern%20business%20attire%2C%20neutral%20expression%2C%20studio%20lighting%2C%20clean%20background%2C%20high%20quality%20portrait%2C%20professional%20photography%2C%20realistic&width=200&height=200&seq=testimonial-2&orientation=squarish',
-                  quote: 'The automation solutions provided by Waaa have revolutionized our internal processes. We\'ve seen a 40% increase in productivity and significant cost savings. Their technical expertise and attention to detail are unmatched in the industry.'
-                },
-                {
-                  name: 'Emily Rodriguez',
-                  position: 'Marketing Director, GrowthX',
-                  image: 'https://readdy.ai/api/search-image?query=professional%20headshot%20of%20confident%20female%20marketing%20director%20with%20modern%20business%20attire%2C%20neutral%20expression%2C%20studio%20lighting%2C%20clean%20background%2C%20high%20quality%20portrait%2C%20professional%20photography%2C%20realistic&width=200&height=200&seq=testimonial-3&orientation=squarish',
-                  quote: 'The UI/UX design work that Waaa delivered exceeded our expectations. Our website conversion rate has increased by 35% since the redesign. They truly understand how to create digital experiences that engage and convert visitors.'
-                }
-              ].map((testimonial, index) => (
-                <SwiperSlide key={index}>
-                  <div className="backdrop-blur-lg bg-black bg-opacity-20 p-8 md:p-10 rounded-2xl border border-white border-opacity-10">
-                    <div className="flex flex-col md:flex-row items-center md:items-start gap-6">
-                      <div className="w-24 h-24 rounded-full overflow-hidden flex-shrink-0 border-2 border-pink-500">
-                        <img
-                          src={testimonial.image}
-                          alt={testimonial.name}
-                          className="w-full h-full object-cover"
-                        />
-                      </div>
-                      <div>
-                        <div className="text-pink-400 mb-4">
-                          <i className="fas fa-quote-left text-3xl opacity-50"></i>
-                        </div>
-                        <p className="text-lg mb-6 italic text-gray-300">"{testimonial.quote}"</p>
-                        <div>
-                          <h4 className="text-xl font-bold">{testimonial.name}</h4>
-                          <p className="text-gray-400">{testimonial.position}</p>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </SwiperSlide>
-              ))}
-            </Swiper>
-          </div>
-        </div>
-      </section>
+        </motion.div>
+      ))}
+    </motion.div>
+  </div>
+</motion.section>
+
+
       {/* Contact Form */}
-      <section className="py-20 relative overflow-hidden" id="contact">
+<motion.section
+  id="contact"
+  className="py-20 relative overflow-hidden bg-white text-black"
+  initial="hidden"
+  whileInView="visible"
+  viewport={{ once: true, amount: 0.3 }}
+  transition={{ duration: 0.6 }}
+  variants={fadeInUp}
+>
         <div className="absolute inset-0 z-0">
           <div className="w-full h-full bg-gradient-to-br from-[#121212] to-[#1f1f1f]">
             <div className="absolute inset-0 bg-black bg-opacity-80 backdrop-blur-sm 
@@ -770,14 +865,14 @@ const App: React.FC = () => {
         </div>
         <div className="container mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
           <div className="text-center mb-16">
-            <h2 className="text-3xl md:text-4xl font-bold mb-4">Get In Touch</h2>
+            <h2 className="text-3xl md:text-4xl font-bold mb-4 text-gray-100">Get In Touch</h2>
             <p className="text-xl text-gray-300 max-w-3xl mx-auto">
               Ready to start your next project? Contact us today for a free consultation
             </p>
           </div>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-6xl mx-auto">
             <div className="backdrop-blur-lg bg-black bg-opacity-20 p-8 rounded-2xl border border-white border-opacity-10">
-              <h3 className="text-2xl font-bold mb-6">Send Us a Message</h3>
+              <h3 className="text-2xl font-bold mb-6 text-gray-100">Send Us a Message</h3>
               <form>
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 mb-6">
                   <div>
@@ -826,14 +921,14 @@ const App: React.FC = () => {
               </form>
             </div>
             <div className="backdrop-blur-lg bg-black bg-opacity-20 p-8 rounded-2xl border border-white border-opacity-10">
-              <h3 className="text-2xl font-bold mb-6">Contact Information</h3>
+              <h3 className="text-2xl font-bold mb-6 text-gray-100">Contact Information</h3>
               <div className="space-y-6">
                 <div className="flex items-start">
                   <div className="w-10 h-10 rounded-full bg-gradient-to-r from-pink-500 to-blue-500 flex items-center justify-center mr-4 flex-shrink-0">
                     <i className="fas fa-map-marker-alt"></i>
                   </div>
                   <div>
-                    <h4 className="text-lg font-medium mb-1">Our Locations</h4>
+                    <h4 className="text-lg font-medium mb-1 text-gray-100">Our Locations</h4>
                     <p className="text-gray-300">
                       Bangalore 
                     </p>
@@ -844,7 +939,7 @@ const App: React.FC = () => {
                     <i className="fas fa-phone-alt"></i>
                   </div>
                     <div>
-                      <h4 className="text-lg font-medium mb-1">Phone Numbers</h4>
+                      <h4 className="text-lg font-medium mb-1 text-gray-100 text-gray-100">Phone Numbers</h4>
                       <ul className="text-gray-300">
                         <li>
                           India: <a href="tel:+917086665218" className="hover:underline">+91 708-666-5218</a>
@@ -860,13 +955,13 @@ const App: React.FC = () => {
                     <i className="fas fa-envelope"></i>
                   </div>
                   <div>
-                    <h4 className="text-lg font-medium mb-1">Email Address</h4>
+                    <h4 className="text-lg font-medium mb-1 text-gray-100">Email Address</h4>
                     <p className="text-gray-300">team@waaa.in</p>
                   </div>
                 </div>
               </div>
               <div className="mt-8">
-                <h4 className="text-lg font-medium mb-4">Follow Us</h4>
+                <h4 className="text-lg font-medium mb-4 text-gray-100">Follow Us</h4>
                 <div className="flex space-x-4">
                   {['fa-facebook-f', 'fa-twitter', 'fa-instagram', 'fa-linkedin-in', 'fa-github'].map((icon, index) => (
                     <a
@@ -882,84 +977,91 @@ const App: React.FC = () => {
             </div>
           </div>
         </div>
-      </section>
+      </motion.section>
       {/* Footer */}
-      <footer className="py-12 bg-black bg-opacity-90 border-t border-white border-opacity-10">
-        <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="grid grid-cols-1 md:grid-cols-4 gap-8 mb-8">
-            <div>
-              <h3 className="text-2xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-pink-500 to-blue-500 mb-4">Waaa</h3>
-              <p className="text-gray-400 mb-4">
-                Creating ultra-modern digital experiences with cutting-edge technology and immersive design.
-              </p>
-              <div className="flex space-x-4">
-                {['fa-facebook-f', 'fa-twitter', 'fa-instagram', 'fa-linkedin-in'].map((icon, index) => (
-                  <a
-                    key={index}
-                    href="#"
-                    className="w-8 h-8 rounded-full bg-white bg-opacity-10 flex items-center justify-center hover:bg-gradient-to-r hover:from-pink-500 hover:to-blue-500 transition-all duration-300 cursor-pointer"
-                  >
-                    <i className={`fab ${icon} text-sm`}></i>
-                  </a>
-                ))}
-              </div>
-            </div>
-            <div>
-              <h4 className="text-lg font-bold mb-4">Services</h4>
-              <ul className="space-y-2">
-                {['Web Development', 'API Integration', 'Automation', 'AI Integration'].map((item, index) => (
-                  <li key={index}>
-                    <a href="#" className="text-gray-400 hover:text-white transition-colors duration-300 cursor-pointer">
-                      {item}
-                    </a>
-                  </li>
-                ))}
-              </ul>
-            </div>
-            <div>
-              <h4 className="text-lg font-bold mb-4">Company</h4>
-              <ul className="space-y-2">
-                {['About Us', 'Our Team', 'Careers', 'Blog', 'Contact Us', 'Privacy Policy'].map((item, index) => (
-                  <li key={index}>
-                    <a href="#" className="text-gray-400 hover:text-white transition-colors duration-300 cursor-pointer">
-                      {item}
-                    </a>
-                  </li>
-                ))}
-              </ul>
-            </div>
-            <div>
-              <h4 className="text-lg font-bold mb-4">Newsletter</h4>
-              <p className="text-gray-400 mb-4">
-                Subscribe to our newsletter to receive updates on our latest projects and technologies.
-              </p>
-              <form className="flex">
-                <input
-                  type="email"
-                  placeholder="Your email"
-                  className="flex-grow px-4 py-2 bg-black bg-opacity-50 border border-white border-opacity-20 rounded-l-md text-white focus:outline-none focus:ring-2 focus:ring-pink-500 focus:border-transparent transition-all duration-300"
-                />
-                <button
-                  type="submit"
-                  className="bg-gradient-to-r from-pink-500 to-blue-500 text-white px-4 py-2 rounded-r-md font-medium hover:from-pink-600 hover:to-blue-600 transition-all duration-300 cursor-pointer !rounded-button whitespace-nowrap"
-                >
-                  <i className="fas fa-paper-plane"></i>
-                </button>
-              </form>
-            </div>
-          </div>
-          <div className="pt-8 border-t border-white border-opacity-10 text-center">
-            <p className="text-gray-400">
-              &copy; {new Date().getFullYear()} Waaa. All rights reserved.
-            </p>
-            <div className="flex justify-center space-x-4 mt-4">
-              {['fa-cc-visa', 'fa-cc-mastercard', 'fa-cc-paypal', 'fa-cc-apple-pay'].map((icon, index) => (
-                <i key={index} className={`fab ${icon} text-2xl text-gray-500`}></i>
-              ))}
-            </div>
-          </div>
+<footer className="py-12 bg-white border-t border-gray-200">
+  <div className="container mx-auto px-4 sm:px-6 lg:px-8">
+    <div className="grid grid-cols-1 md:grid-cols-4 gap-8 mb-8">
+      <div>
+        <h3 className="text-2xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-pink-500 to-blue-500 mb-4">
+          Waaa
+        </h3>
+        <p className="text-gray-600 mb-4">
+          Creating ultra-modern digital experiences with cutting-edge technology and immersive design.
+        </p>
+        <div className="flex space-x-4">
+          {['fa-facebook-f', 'fa-twitter', 'fa-instagram', 'fa-linkedin-in'].map((icon, index) => (
+            <a
+              key={index}
+              href="#"
+              className="w-8 h-8 rounded-full bg-gray-100 flex items-center justify-center hover:bg-gradient-to-r hover:from-pink-500 hover:to-blue-500 hover:text-white transition-all duration-300"
+            >
+              <i className={`fab ${icon} text-sm`}></i>
+            </a>
+          ))}
         </div>
-      </footer>
+      </div>
+
+      <div>
+        <h4 className="text-lg font-bold text-black mb-4">Services</h4>
+        <ul className="space-y-2">
+          {['Web Development', 'API Integration', 'Automation', 'AI Integration'].map((item, index) => (
+            <li key={index}>
+              <a href="#" className="text-gray-700 hover:text-black transition-colors duration-300 cursor-pointer">
+                {item}
+              </a>
+            </li>
+          ))}
+        </ul>
+      </div>
+
+      <div>
+        <h4 className="text-lg font-bold text-black mb-4">Company</h4>
+        <ul className="space-y-2">
+          {['About Us', 'Our Team', 'Careers', 'Blog', 'Contact Us', 'Privacy Policy'].map((item, index) => (
+            <li key={index}>
+              <a href="#" className="text-gray-700 hover:text-black transition-colors duration-300 cursor-pointer">
+                {item}
+              </a>
+            </li>
+          ))}
+        </ul>
+      </div>
+
+      <div>
+        <h4 className="text-lg font-bold text-black mb-4">Newsletter</h4>
+        <p className="text-gray-600 mb-4">
+          Subscribe to our newsletter to receive updates on our latest projects and technologies.
+        </p>
+        <form className="flex">
+          <input
+            type="email"
+            placeholder="Your email"
+            className="flex-grow px-4 py-2 bg-white border border-gray-300 rounded-l-md text-black placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-pink-500 focus:border-transparent transition-all duration-300"
+          />
+          <button
+            type="submit"
+            className="bg-gradient-to-r from-pink-500 to-blue-500 text-white px-4 py-2 rounded-r-md font-medium hover:from-pink-600 hover:to-blue-600 transition-all duration-300 cursor-pointer"
+          >
+            <i className="fas fa-paper-plane"></i>
+          </button>
+        </form>
+      </div>
+    </div>
+
+    <div className="pt-8 border-t border-gray-200 text-center">
+      <p className="text-gray-600">
+        &copy; {new Date().getFullYear()} Waaa. All rights reserved.
+      </p>
+      <div className="flex justify-center space-x-4 mt-4">
+        {['fa-cc-visa', 'fa-cc-mastercard', 'fa-cc-paypal', 'fa-cc-apple-pay'].map((icon, index) => (
+          <i key={index} className={`fab ${icon} text-2xl text-gray-500`}></i>
+        ))}
+      </div>
+    </div>
+  </div>
+</footer>
+
       {/* AI Chat Bot */}
       <div className="fixed bottom-6 right-6 z-50" style={{ pointerEvents: 'auto' }}>
         <button
