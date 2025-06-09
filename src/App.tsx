@@ -13,7 +13,9 @@ import bg2 from './assets/images/bg2.jpg';
 import bg3 from './assets/images/bg3.jpg';
 import bg4 from './assets/images/bg4.jpg';
 import bg5 from './assets/images/bg5.jpg';
-
+import webdev from './assets/images/web-dev.jpeg';
+import api from './assets/images/api.jpg';
+import automation from './assets/images/automation.jpg';
 
 
 const App: React.FC = () => {
@@ -490,19 +492,19 @@ const App: React.FC = () => {
                 title: 'Web Development',
                 description: 'Modern, responsive websites with cutting-edge technologies and immersive user experiences.',
                 icon: 'fa-code',
-                image: 'src/assets/images/web-dev.jpeg'   
+                image: webdev   
               },
               {
                 title: 'API Integration',
                 description: 'Seamless integration of third-party APIs and development of custom API solutions.',
                 icon: 'fa-plug',
-                image: 'src/assets/images/api.jpg'
+                image: api
               },
               {
                 title: 'Automation',
                 description: 'Streamline your workflows with intelligent automation solutions that save time and resources.',
                 icon: 'fa-robot',
-                image: 'src/assets/images/automation.jpg'
+                image: automation
               },
               {
                 title: 'AI Integration',
