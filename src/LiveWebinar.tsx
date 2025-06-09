@@ -46,7 +46,7 @@ const LiveWebinar = () => {
         <div className="max-w-4xl mx-auto text-center">
           <h2 className="text-3xl font-bold mb-6">Meet Your Expert Instructor</h2>
           <div className="flex justify-center">
-            <InstructorCard name="Sovhan Sekhar" title="Python Developer" />
+            {/* <InstructorCard name="Sovhan Sekhar" title="Python Developer" /> */}
           </div>
         </div>
       </section>
@@ -144,8 +144,8 @@ const LiveWebinar = () => {
   );
 };
 
-//Here the name,title are not generated so we comment it out but when it available be have to remove from comment
-
+// Here the name,title are not generated so we comment it out but when it available be have to remove from
+//For Dynamic data
 // const InstructorCard = ({ name, title }) => (
 //   <div className="text-center bg-white p-5 rounded-lg shadow-md w-full max-w-xs">
 //     <div className="h-24 w-24 mx-auto rounded-full bg-gray-200 mb-3" />
@@ -153,5 +153,14 @@ const LiveWebinar = () => {
 //     <p className="text-sm text-gray-600">{title}</p>
 //   </div>
 // );
+//For Static Data
+// const InstructorCard = () => (
+//   <div className="text-center bg-white p-5 rounded-lg shadow-md w-full max-w-xs">
+//     <div className="h-24 w-24 mx-auto rounded-full bg-gray-200 mb-3" />
+//     <h3 className="text-lg font-bold">Sovan Sekhar</h3>
+//     <p className="text-sm text-gray-600">Python Developer</p>
+//   </div>
+// );
+
 
 export default LiveWebinar;
