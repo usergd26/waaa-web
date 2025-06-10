@@ -105,7 +105,7 @@ const LiveWebinar = () => {
         </button>
         <div className="mt-6">
           <a
-            href="https://wa.me/919999999999"
+            href="https://wa.me/917086665218"
             target="_blank"
             rel="noopener noreferrer"
             className="text-green-600 underline text-lg"
