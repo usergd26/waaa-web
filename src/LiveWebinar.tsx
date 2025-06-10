@@ -1,11 +1,25 @@
 import { useState } from "react";
 import webdev from './assets/images/web-dev.jpeg';
+import axios from "axios";
 
 const LiveWebinar = () => {
   const [showModal, setShowModal] = useState(false);
 
   const handleRegister = () => setShowModal(true);
   const handleClose = () => setShowModal(false);
+  const [loading, setLoading] = useState(false);
+  const [formData, setFormData] = useState({
+    name: '',
+    email: '',
+    phone: '',
+  });
+
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setFormData(prev => ({
+      ...prev,
+      [e.target.name]: e.target.value
+    }));
+  };
 
   return (
     <div className="font-sans text-gray-900">
@@ -91,7 +105,7 @@ const LiveWebinar = () => {
         </button>
         <div className="mt-6">
           <a
-            href="https://wa.me/919999999999" 
+            href="https://wa.me/919999999999"
             target="_blank"
             rel="noopener noreferrer"
             className="text-green-600 underline text-lg"
@@ -107,7 +121,36 @@ const LiveWebinar = () => {
           <div className="bg-white p-8 rounded-xl shadow-lg w-full max-w-md relative">
             <button onClick={handleClose} className="absolute top-3 right-3 text-gray-500 hover:text-black">✖</button>
             <h3 className="text-xl font-bold mb-4">Register for Webinar</h3>
-            <form
+            <form onSubmit={async (e) => {
+              e.preventDefault();
+              setLoading(true);
+
+              try {
+                const url = 'https://waaa-api.onrender.com'
+                //const url = 'https://localhost:44388'
+                const response = await axios.post(url + '/registerwebinar', formData);
+
+                if (response.status !== 200) {
+                  throw new Error('API request failed');
+                }
+                alert('Registration successfull');
+
+              }
+              catch (error) {
+                if (axios.isAxiosError(error) && error.response?.status === 409) {
+                  alert('User already registered');
+                }
+
+                else {
+                  console.error('Error submitting form:', error);
+                  alert('Something went wrong. Please try again later.');
+                }
+              }
+              finally {
+                setFormData({ name: '', email: '', phone: '' });
+                setLoading(false);
+              }
+            }}
               action="https://formspree.io/f/moqgdvya"
               method="POST"
               className="space-y-4"
@@ -115,6 +158,8 @@ const LiveWebinar = () => {
               <input
                 type="text"
                 name="name"
+                onChange={handleChange}
+                value={formData.name}
                 required
                 placeholder="Full Name"
                 className="w-full px-4 py-2 border rounded-md"
@@ -122,6 +167,8 @@ const LiveWebinar = () => {
               <input
                 type="email"
                 name="email"
+                onChange={handleChange}
+                value={formData.email}
                 required
                 placeholder="Email Address"
                 className="w-full px-4 py-2 border rounded-md"
@@ -129,6 +176,8 @@ const LiveWebinar = () => {
               <input
                 type="tel"
                 name="phone"
+                onChange={handleChange}
+                value={formData.phone}
                 required
                 placeholder="Phone Number"
                 className="w-full px-4 py-2 border rounded-md"
@@ -136,6 +185,12 @@ const LiveWebinar = () => {
               <button type="submit" className="bg-purple-700 text-white px-4 py-2 rounded-md w-full font-semibold">
                 Submit & Pay ₹99
               </button>
+
+              {loading && (
+                <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+                  <div className="w-12 h-12 border-4 border-white border-t-blue-500 rounded-full animate-spin"></div>
+                </div>
+              )}
             </form>
           </div>
         </div>
