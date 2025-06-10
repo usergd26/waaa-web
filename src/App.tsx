@@ -114,25 +114,25 @@ const App: React.FC = () => {
   }, []);
 
   // framer-motion
-  const fadeInUp = {
-    hidden: { opacity: 0, y: 40 },
-    visible: { opacity: 1, y: 0 },
-  };
+  // const fadeInUp = {
+  //   hidden: { opacity: 0, y: 40 },
+  //   visible: { opacity: 1, y: 0 },
+  // };
 
-  const fadeLeft = {
-    hidden: { opacity: 0, x: -40 },
-    visible: { opacity: 1, x: 0 },
-  };
+  // const fadeLeft = {
+  //   hidden: { opacity: 0, x: -40 },
+  //   visible: { opacity: 1, x: 0 },
+  // };
 
   // const fadeRight = {
   //   hidden: { opacity: 0, x: 40 },
   //   visible: { opacity: 1, x: 0 },
   // };
 
-  const zoomIn = {
-    hidden: { opacity: 0, scale: 0.9 },
-    visible: { opacity: 1, scale: 1 },
-  };
+  // const zoomIn = {
+  //   hidden: { opacity: 0, scale: 0.9 },
+  //   visible: { opacity: 1, scale: 1 },
+  // };
 
 
 
@@ -449,8 +449,8 @@ const App: React.FC = () => {
               initial="hidden"
               whileInView="visible"
               viewport={{ once: true, amount: 0.3 }}
-              transition={{ duration: 0.6 }}
-              variants={fadeInUp}
+              // transition={{ duration: 0.6 }}
+              // variants={fadeInUp}
             >
               <div className="absolute inset-0 z-0 overflow-hidden">
                 {/* Sliding Image Background */}
@@ -575,8 +575,8 @@ const App: React.FC = () => {
               initial="hidden"
               whileInView="visible"
               viewport={{ once: true, amount: 0.3 }}
-              transition={{ duration: 0.6 }}
-              variants={fadeLeft}
+              // transition={{ duration: 0.6 }}
+              // variants={fadeLeft}
             >
               <div className="container mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
                 <div className="text-center mb-16">
@@ -881,8 +881,8 @@ const App: React.FC = () => {
               initial="hidden"
               whileInView="visible"
               viewport={{ once: false, amount: 0.3 }}
-              transition={{ duration: 0.6 }}
-              variants={zoomIn}
+              // transition={{ duration: 0.6 }}
+              // variants={zoomIn}
             >
               <div className="container mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
                 <div className="text-center mb-16">
@@ -960,8 +960,8 @@ const App: React.FC = () => {
               initial="hidden"
               whileInView="visible"
               viewport={{ once: true, amount: 0.3 }}
-              transition={{ duration: 0.6 }}
-              variants={fadeInUp}
+              // transition={{ duration: 0.6 }}
+              // variants={fadeInUp}
             >
               <div className="absolute inset-0 z-0">
                 <div className="w-full h-full bg-gradient-to-br from-[#121212] to-[#1f1f1f]">
