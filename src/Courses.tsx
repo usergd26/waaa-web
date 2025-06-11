@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import { useState } from "react";
 import c from './assets/courses/C.jpg';
 import datascience from './assets/courses/datascience.jpg';
 import django from './assets/courses/django.jpg';
@@ -51,7 +51,7 @@ const initialCourses = [
   },
 ];
 
-const getStars = (rating) => {
+const getStars = (rating: number) => {
   const fullStars = Math.floor(rating);
   const halfStar = rating % 1 >= 0.3 && rating % 1 < 0.8;
   const emptyStars = 5 - fullStars - (halfStar ? 1 : 0);
@@ -72,7 +72,7 @@ export default function CoursesSection() {
   const [courses, setCourses] = useState(initialCourses);
   const [toast, setToast] = useState(null);
 
-  const handleEnroll = (index) => {
+  const handleEnroll = (index: number) => {
     const course = courses[index];
     if (course.enrolled) return;
 

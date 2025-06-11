@@ -1,5 +1,5 @@
 import axios from 'axios';
-import type { AxiosInstance, AxiosRequestConfig, AxiosError } from 'axios';
+import type { AxiosInstance, AxiosError } from 'axios';
 const api: AxiosInstance = axios.create({
   baseURL : 'https://waaa-api.onrender.com',
   //baseURL: 'https://localhost:44388',
