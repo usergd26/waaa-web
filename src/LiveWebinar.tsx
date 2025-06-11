@@ -1,6 +1,6 @@
 import { useState } from "react";
 import webdev from './assets/images/web-dev.jpeg';
-import axios from "axios";
+import interceptor from "./interceptor";
 
 const LiveWebinar = () => {
   const [showModal, setShowModal] = useState(false);
@@ -126,9 +126,7 @@ const LiveWebinar = () => {
               setLoading(true);
 
               try {
-                const url = 'https://waaa-api.onrender.com'
-                //const url = 'https://localhost:44388'
-                const response = await axios.post(url + '/registerwebinar', formData);
+                const response = await interceptor.post('/registerwebinar', formData);
 
                 if (response.status !== 200) {
                   throw new Error('API request failed');
@@ -137,7 +135,7 @@ const LiveWebinar = () => {
 
               }
               catch (error) {
-                if (axios.isAxiosError(error) && error.response?.status === 409) {
+                if (error.response?.status === 409) {
                   alert('User already registered');
                 }
 

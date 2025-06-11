@@ -4,7 +4,7 @@ import * as echarts from 'echarts';
 import { motion } from 'framer-motion';
 // import { Swiper, SwiperSlide } from 'swiper/react';
 // import { Pagination, Autoplay } from 'swiper/modules';
-import axios from 'axios';
+import interceptor from './interceptor';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import { Link } from 'react-router-dom';
 import LiveWebinar from './LiveWebinar'; // adjust path as per your structure
@@ -509,7 +509,7 @@ const App: React.FC = () => {
                         setLoading(true);
 
                         try {
-                          const response = await axios.post('https://waaa-api.onrender.com/getblueprint', formData);
+                          const response = await interceptor.post('/getblueprint', formData);
 
                           if (response.status !== 200) {
                             throw new Error('API request failed');
