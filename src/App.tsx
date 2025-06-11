@@ -8,6 +8,7 @@ import axios from 'axios';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import { Link } from 'react-router-dom';
 import LiveWebinar from './LiveWebinar'; // adjust path as per your structure
+import Courses from './Courses';
 import bg1 from './assets/images/bg1.jpg';
 import bg2 from './assets/images/bg2.jpg';
 import bg3 from './assets/images/bg3.jpg';
@@ -257,6 +258,7 @@ const App: React.FC = () => {
     <Router>
       <Routes>
         <Route path="/live-webinar" element={<LiveWebinar />} />
+        <Route path="/Courses" element={<Courses />} />
         <Route path="/" element={
           <div className="min-h-screen bg-black text-white overflow-x-hidden">
             {/* Floating Elements */}
@@ -322,7 +324,7 @@ const App: React.FC = () => {
                             </Link>
 
                             <Link
-                              to="/courses"
+                              to="/Courses"
                               className="block px-4 py-2 text-sm text-white hover:bg-white hover:bg-opacity-10 transition-all duration-200"
                             >
                               Courses
