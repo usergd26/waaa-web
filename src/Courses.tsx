@@ -70,7 +70,7 @@ const getStars = (rating: number) => {
 
 export default function CoursesSection() {
   const [courses, setCourses] = useState(initialCourses);
-  const [toast, setToast] = useState(null);
+const [toast, setToast] = useState<string | null>(null);
 
   const handleEnroll = (index: number) => {
     const course = courses[index];

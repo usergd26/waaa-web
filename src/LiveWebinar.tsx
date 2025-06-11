@@ -135,7 +135,8 @@ const LiveWebinar = () => {
 
               }
               catch (error) {
-                if (error.response?.status === 409) {
+                const err = error as { response?: { status: number } };
+                if (err.response?.status === 409) {
                   alert('User already registered');
                 }
 
