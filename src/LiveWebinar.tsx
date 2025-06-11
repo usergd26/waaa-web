@@ -14,6 +14,9 @@ const LiveWebinar = () => {
     phone: '',
   });
 
+  const [paymentDone, setPaymentDone] = useState(false);
+  const [registrationSuccess, setRegistrationSuccess] = useState(false);
+
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setFormData(prev => ({
       ...prev,
@@ -120,77 +123,139 @@ const LiveWebinar = () => {
         <div className="fixed inset-0 bg-black bg-opacity-70 flex items-center justify-center z-50">
           <div className="bg-white p-8 rounded-xl shadow-lg w-full max-w-md relative">
             <button onClick={handleClose} className="absolute top-3 right-3 text-gray-500 hover:text-black">✖</button>
-            <h3 className="text-xl font-bold mb-4">Register for Webinar</h3>
-            <form onSubmit={async (e) => {
-              e.preventDefault();
-              setLoading(true);
 
-              try {
-                const response = await interceptor.post('/registerwebinar', formData);
+            {!registrationSuccess ? (
+              <>
+                <h3 className="text-xl font-bold mb-4">Register for Webinar</h3>
+                <form onSubmit={async (e) => {
+                  e.preventDefault();
+                  setLoading(true);
 
-                if (response.status !== 200) {
-                  throw new Error('API request failed');
-                }
-                alert('Registration successfull');
+                  try {
+                    const response = await interceptor.post('/registerwebinar', formData);
 
-              }
-              catch (error) {
-                const err = error as { response?: { status: number } };
-                if (err.response?.status === 409) {
-                  alert('User already registered');
-                }
+                    if (response.status !== 200) {
+                      throw new Error('API request failed');
+                    }
+                    setRegistrationSuccess(true);
+                  }
+                  catch (error) {
+                    const err = error as { response?: { status: number } };
+                    if (err.response?.status === 409) {
+                      setRegistrationSuccess(true);
 
-                else {
-                  console.error('Error submitting form:', error);
-                  alert('Something went wrong. Please try again later.');
-                }
-              }
-              finally {
+                    }
+                    else {
+                      console.error('Error submitting form:', error);
+                      alert('Something went wrong. Please try again later.');
+                    }
+                  }
+                  finally {
                 setFormData({ name: '', email: '', phone: '' });
-                setLoading(false);
-              }
-            }}
-              action="https://formspree.io/f/moqgdvya"
-              method="POST"
-              className="space-y-4"
-            >
-              <input
-                type="text"
-                name="name"
-                onChange={handleChange}
-                value={formData.name}
-                required
-                placeholder="Full Name"
-                className="w-full px-4 py-2 border rounded-md"
-              />
-              <input
-                type="email"
-                name="email"
-                onChange={handleChange}
-                value={formData.email}
-                required
-                placeholder="Email Address"
-                className="w-full px-4 py-2 border rounded-md"
-              />
-              <input
-                type="tel"
-                name="phone"
-                onChange={handleChange}
-                value={formData.phone}
-                required
-                placeholder="Phone Number"
-                className="w-full px-4 py-2 border rounded-md"
-              />
-              <button type="submit" className="bg-purple-700 text-white px-4 py-2 rounded-md w-full font-semibold">
-                Submit & Pay ₹99
-              </button>
+                    setLoading(false);
+                  }
+                }}
+                  action="https://formspree.io/f/moqgdvya"
+                  method="POST"
+                  className="space-y-4"
+                >
+                  <input
+                    type="text"
+                    name="name"
+                    onChange={handleChange}
+                    value={formData.name}
+                    required
+                    placeholder="Full Name"
+                    className="w-full px-4 py-2 border rounded-md"
+                  />
+                  <input
+                    type="email"
+                    name="email"
+                    onChange={handleChange}
+                    value={formData.email}
+                    required
+                    placeholder="Email Address"
+                    className="w-full px-4 py-2 border rounded-md"
+                  />
+                  <input
+                    type="tel"
+                    name="phone"
+                    onChange={handleChange}
+                    value={formData.phone}
+                    required
+                    placeholder="Phone Number"
+                    className="w-full px-4 py-2 border rounded-md"
+                  />
+                  <button type="submit" className="bg-purple-700 text-white px-4 py-2 rounded-md w-full font-semibold">
+                    Submit & Pay ₹99
+                  </button>
+                </form>
+              </>
+            ) : !paymentDone ? (
+              <div className="text-center">
+                <h3 className="text-xl font-bold mb-4">Payment Details</h3>
+                <p className="mb-4">Thank you for registering, {formData.name}!</p>
+                <p className="mb-6">Please scan the QR code below to complete your payment of ₹99</p>
 
-              {loading && (
-                <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-                  <div className="w-12 h-12 border-4 border-white border-t-blue-500 rounded-full animate-spin"></div>
+                {/* Replace with your actual QR code image */}
+                <div className="flex justify-center mb-6">
+                  <img
+                    src=".\src\assets\images\payment.jpg"
+                    alt="Payment QR Code"
+                    className="w-48 h-48 border border-gray-200"
+                  />
                 </div>
-              )}
-            </form>
+
+                <p className="text-sm text-gray-600 mb-2">UPI ID: sovansekhar65@oksbi</p>
+                <p className="text-sm text-gray-600 mb-6">Or pay to: 7086665128</p>
+
+                <button
+                  onClick={() => setPaymentDone(true)}
+                  className="bg-purple-700 text-white px-4 py-2 rounded-md w-full font-semibold mb-2"
+                >
+                  I've Done the Payment
+                </button>
+
+                <button
+                  onClick={() => {
+                    setFormData({ name: '', email: '', phone: '' });
+                    setRegistrationSuccess(false);
+                    handleClose();
+                  }}
+                  className="text-purple-700 px-4 py-2 rounded-md w-full font-semibold border border-purple-700"
+                >
+                  Cancel
+                </button>
+              </div>
+            ) : (
+              <div className="text-center">
+                <div className="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                  <svg xmlns="http://www.w3.org/2000/svg" className="h-8 w-8 text-green-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                  </svg>
+                </div>
+                <h3 className="text-xl font-bold mb-2">Payment verification is in progress!</h3>
+                <p className="mb-6">Thanks for your payment! Our team will verify it and get in touch with you shortly!</p>
+
+                <button
+                  onClick={() => {
+                    setFormData({ name: '', email: '', phone: '' });
+                    setRegistrationSuccess(false);
+                    setPaymentDone(false);
+                    handleClose();
+                  }}
+                  className="bg-purple-700 text-white px-4 py-2 rounded-md w-full font-semibold"
+                >
+                  Close
+                </button>
+              </div>
+            )}
+
+            {loading && (
+              <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+                <div className="w-12 h-12 border-4 border-white border-t-blue-500 rounded-full animate-spin"></div>
+              </div>
+            )}
           </div>
         </div>
       )}
