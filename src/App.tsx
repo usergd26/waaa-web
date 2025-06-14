@@ -1079,7 +1079,7 @@ const App: React.FC = () => {
                         {['fa-facebook-f', 'fa-twitter', 'fa-instagram', 'fa-linkedin-in', 'fa-github'].map((icon, index) => (
                           <a
                             key={index}
-                            href="#"
+                            href="https://www.instagram.com/waaa.in_?igsh=ZTZ1cXBxOXRydms2&utm_source=qr"
                             className="w-10 h-10 rounded-full bg-black bg-opacity-50 border border-white border-opacity-20 flex items-center justify-center hover:bg-gradient-to-r hover:from-pink-500 hover:to-blue-500 transition-all duration-300 cursor-pointer"
                           >
                             <i className={`fab ${icon}`}></i>
