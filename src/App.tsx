@@ -17,6 +17,9 @@ import bg5 from './assets/images/bg5.jpg';
 import webdev from './assets/images/web-dev.jpeg';
 import api from './assets/images/api.jpg';
 import automation from './assets/images/automation.jpg';
+   {/* Import your logo image at the top of the file */}
+import logo from './assets/images/Waaa-logo.png'; 
+
 
 
 const App: React.FC = () => {
@@ -281,105 +284,105 @@ const App: React.FC = () => {
             </div>
 
 
-            {/* Navigation */}
-            <nav className="fixed top-0 left-0 w-full z-[100] backdrop-blur-md bg-black bg-opacity-20 border-b border-white border-opacity-10">
-              <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-                <div className="flex items-center justify-between h-16">
-                  <div className="flex items-center">
-                    <div className="flex-shrink-0">
-                      <span className="text-2xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-pink-500 to-blue-500">
-                        Waaa
-                      </span>
-                    </div>
-                    <div className="hidden md:block">
-                      <div className="ml-10 flex items-baseline space-x-4">
-                        {[
-                          "Home",
-                          "Services",
-                          "Projects",
-                          "About",
-                          "Contact",
-                        ].map((item) => (
-                          <a
-                            key={item}
-                            href={`#${item.toLowerCase()}`}
-                            className="px-3 py-2 rounded-md text-sm font-medium text-white text-opacity-70 hover:text-opacity-100 hover:bg-white hover:bg-opacity-10 transition-all duration-300 cursor-pointer whitespace-nowrap"
-                          >
-                            {item}
-                          </a>
-                        ))}
+            
+        
+{/* Navigation */}
+<nav className="fixed top-0 left-0 w-full z-[100] backdrop-blur-md bg-black bg-opacity-20 border-b border-white border-opacity-10">
+  <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div className="flex items-center justify-between h-16">
+      <div className="flex items-center">
+        <div className="flex-shrink-0">
+          {/* Replace the span with an img tag */}
+          <img src={logo} alt="Logo" className="h-16" /> {/* Adjust the height as needed */}
+        </div>
+        <div className="hidden md:block">
+          <div className="ml-10 flex items-baseline space-x-4">
+            {[
+              "Home",
+              "Services",
+              "Projects",
+              "About",
+              "Contact",
+            ].map((item) => (
+              <a
+                key={item}
+                href={`#${item.toLowerCase()}`}
+                className="px-3 py-2 rounded-md text-sm font-medium text-white text-opacity-70 hover:text-opacity-100 hover:bg-white hover:bg-opacity-10 transition-all duration-300 cursor-pointer whitespace-nowrap"
+              >
+                {item}
+              </a>
+            ))}
 
-                        {/* 🔽 Resource Dropdown */}
-                        <div className="relative group">
-                          <span className="px-3 py-2 rounded-md text-sm font-medium text-white text-opacity-70 hover:text-opacity-100 hover:bg-white hover:bg-opacity-10 transition-all duration-300 cursor-pointer whitespace-nowrap">
-                            Resource
-                          </span>
-                          <div className="absolute top-full left-0 mt-1 w-48 bg-black bg-opacity-90 backdrop-blur-md rounded-md shadow-lg opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none group-hover:pointer-events-auto z-50">
-                            {/* ✅ Use Link here */}
-                            <Link
-                              to="/live-webinar"
-                              className="block px-4 py-2 text-sm text-white hover:bg-white hover:bg-opacity-10 transition-all duration-200"
-                            >
-                              Live Webinar
-                            </Link>
+            {/* 🔽 Resource Dropdown */}
+            <div className="relative group">
+              <span className="px-3 py-2 rounded-md text-sm font-medium text-white text-opacity-70 hover:text-opacity-100 hover:bg-white hover:bg-opacity-10 transition-all duration-300 cursor-pointer whitespace-nowrap">
+                Resource
+              </span>
+              <div className="absolute top-full left-0 mt-1 w-48 bg-black bg-opacity-90 backdrop-blur-md rounded-md shadow-lg opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none group-hover:pointer-events-auto z-50">
+                {/* ✅ Use Link here */}
+                <Link
+                  to="/live-webinar"
+                  className="block px-4 py-2 text-sm text-white hover:bg-white hover:bg-opacity-10 transition-all duration-200"
+                >
+                  Live Webinar
+                </Link>
 
-                            <Link
-                              to="/Courses"
-                              className="block px-4 py-2 text-sm text-white hover:bg-white hover:bg-opacity-10 transition-all duration-200"
-                            >
-                              Courses
-                            </Link>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                  <div className="md:hidden">
-                    <button
-                      onClick={() =>
-                        setIsMenuOpen(!isMenuOpen)
-                      }
-                      className="inline-flex items-center justify-center p-2 rounded-md text-white hover:text-white hover:bg-white hover:bg-opacity-10 focus:outline-none cursor-pointer !rounded-button whitespace-nowrap"
-                    >
-                      {isMenuOpen ? (
-                        <svg
-                          className="h-6 w-6"
-                          fill="none"
-                          viewBox="0 0 24 24"
-                          stroke="currentColor"
-                        >
-                          <path
-                            strokeLinecap="round"
-                            strokeLinejoin="round"
-                            strokeWidth={2}
-                            d="M6 18L18 6M6 6l12 12"
-                          />
-                        </svg>
-                      ) : (
-                        <svg
-                          className="h-6 w-6"
-                          fill="none"
-                          viewBox="0 0 24 24"
-                          stroke="currentColor"
-                        >
-                          <path
-                            strokeLinecap="round"
-                            strokeLinejoin="round"
-                            strokeWidth={2}
-                            d="M4 6h16M4 12h16M4 18h16"
-                          />
-                        </svg>
-                      )}
-                    </button>
-                  </div>
-                  <div className="hidden md:block">
-                    <button className="bg-gradient-to-r from-pink-500 to-blue-500 text-white px-4 py-2 rounded-md font-medium hover:from-pink-600 hover:to-blue-600 transition-all duration-300 cursor-pointer !rounded-button whitespace-nowrap">
-                      Get Started
-                    </button>
-                  </div>
-                </div>
+                <Link
+                  to="/Courses"
+                  className="block px-4 py-2 text-sm text-white hover:bg-white hover:bg-opacity-10 transition-all duration-200"
+                >
+                  Courses
+                </Link>
               </div>
-            </nav>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div className="md:hidden">
+        <button
+          onClick={() => setIsMenuOpen(!isMenuOpen)}
+          className="inline-flex items-center justify-center p-2 rounded-md text-white hover:text-white hover:bg-white hover:bg-opacity-10 focus:outline-none cursor-pointer !rounded-button whitespace-nowrap"
+        >
+          {isMenuOpen ? (
+            <svg
+              className="h-6 w-6"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke="currentColor"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth={2}
+                d="M6 18L18 6M6 6l12 12"
+              />
+            </svg>
+          ) : (
+            <svg
+              className="h-6 w-6"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke="currentColor"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth={2}
+                d="M4 6h16M4 12h16M4 18h16"
+              />
+            </svg>
+          )}
+        </button>
+      </div>
+      <div className="hidden md:block">
+        <button className="bg-gradient-to-r from-pink-500 to-blue-500 text-white px-4 py-2 rounded-md font-medium hover:from-pink-600 hover:to-blue-600 transition-all duration-300 cursor-pointer !rounded-button whitespace-nowrap">
+          Get Started
+        </button>
+      </div>
+    </div>
+  </div>
+</nav>
+
 
             {/* Mobile Menu Overlay */}
             {isMenuOpen && (
