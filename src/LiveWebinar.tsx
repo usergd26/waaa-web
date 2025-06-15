@@ -1,6 +1,7 @@
 import { useState } from "react";
 import webdev from './assets/images/web-dev.jpeg';
 import interceptor from "./interceptor";
+import payment from "./assets/images/payment.jpg"
 
 const LiveWebinar = () => {
   const [showModal, setShowModal] = useState(false);
@@ -200,7 +201,7 @@ const LiveWebinar = () => {
                 {/* Replace with your actual QR code image */}
                 <div className="flex justify-center mb-6">
                   <img
-                    src=".\src\assets\images\payment.jpg"
+                    src={payment}
                     alt="Payment QR Code"
                     className="w-48 h-48 border border-gray-200"
                   />
