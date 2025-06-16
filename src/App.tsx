@@ -904,28 +904,28 @@ const App: React.FC = () => {
                   className="max-w-5xl mx-auto grid grid-cols-1 gap-8"
                 >
                   {[{
-                    name: 'Sarah Johnson',
-                    position: 'CEO, TechVision',
+                    name: 'Ravi Mehta',
+                    position: 'Founder, MehtaTech Solutions',
                     image: 'https://readdy.ai/api/search-image?query=professional%20headshot%20of%20confident%20female%20CEO%20with%20modern%20business%20attire%2C%20neutral%20expression%2C%20studio%20lighting%2C%20clean%20background%2C%20high%20quality%20portrait%2C%20professional%20photography%2C%20realistic&width=200&height=200&seq=testimonial-1&orientation=squarish',
-                    quote: 'Working with Waaa has been a game-changer for our business. Their innovative approach to web development and AI integration has helped us stay ahead of the competition.',
+                    quote: 'Working with WAAA has been a game-changer. Their team understood our vision from day one and built a scalable product that exceeded expectations. Their turnaround time and support are top-notch. We consider them an extension of our core team now.',
                   },
                   {
-                    name: 'Michael Chen',
-                    position: 'CTO, Innovate Labs',
+                    name: 'Ananya Desai',
+                    position: 'Marketing Head, Skynest Naturals',
                     image: 'https://readdy.ai/api/search-image?query=professional%20headshot%20of%20confident%20male%20CTO%20with%20modern%20business%20attire%2C%20neutral%20expression%2C%20studio%20lighting%2C%20clean%20background%2C%20high%20quality%20portrait%2C%20professional%20photography%2C%20realistic&width=200&height=200&seq=testimonial-2&orientation=squarish',
-                    quote: "The automation solutions provided by Waaa have revolutionized our internal processes. We've seen a 40% increase in productivity and significant cost savings.",
+                    quote: "WAAA didn’t just deliver a website—they brought our brand to life online. Their design sense is intuitive, and the user experience they crafted has directly boosted our online sales. Highly recommended for any brand that wants to stand out digitally.",
                   },
                   {
-                    name: 'Emily Rodriguez',
-                    position: 'Marketing Director, GrowthX',
+                    name: 'Vikram Sharma',
+                    position: 'COO, EduCraft Learning',
                     image: 'https://readdy.ai/api/search-image?query=professional%20headshot%20of%20confident%20female%20marketing%20director%20with%20modern%20business%20attire%2C%20neutral%20expression%2C%20studio%20lighting%2C%20clean%20background%2C%20high%20quality%20portrait%2C%20professional%20photography%2C%20realistic&width=200&height=200&seq=testimonial-3&orientation=squarish',
-                    quote: 'The UI/UX design work that Waaa delivered exceeded our expectations. Our website conversion rate has increased by 35% since the redesign.',
+                    quote: 'We needed a custom LMS built in record time, and WAAA delivered. Their technical skills, proactive updates, and post-launch support were stellar. Thanks to them, our platform now serves 10,000+ students seamlessly.',
                   },
                   {
-                    name: 'Amit Verma',
-                    position: 'Founder, CodeCraft',
+                    name: 'Emily Thompson',
+                    position: 'Director of Operations, MapleWell Co.',
                     image: 'https://images.unsplash.com/photo-1527980965255-d3b416303d12?fit=crop&w=200&h=200',
-                    quote: 'Waaa helped us integrate AI into our product pipeline and we’ve seen tremendous improvements in user engagement and support efficiency.',
+                    quote: 'Finding a reliable offshore tech partner isn’t easy—but WAAA nailed it. Their professionalism, clear communication, and quality of code were exceptional. We’ve worked with other agencies before, but WAAA stands out for their integrity and commitment.',
                   }].map((testimonial, index) => (
                     <motion.div
                       key={index}
