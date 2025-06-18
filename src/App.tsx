@@ -7,6 +7,8 @@ import { motion } from 'framer-motion';
 import interceptor from './interceptor';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import { Link } from 'react-router-dom';
+import Login from './Login';
+import Dashboard from './Dashboard';
 import LiveWebinar from './LiveWebinar'; // adjust path as per your structure
 import Courses from './Courses';
 import bg1 from './assets/images/bg1.jpg';
@@ -262,6 +264,9 @@ const App: React.FC = () => {
       <Routes>
         <Route path="/live-webinar" element={<LiveWebinar />} />
         <Route path="/Courses" element={<Courses />} />
+        <Route path="/login" element={<Login />} /> {/* Add this line for the login route */}
+        <Route path="/dashboard" element={<Dashboard />} /> {/* Add this line for the dashboard route */}
+      
         <Route path="/" element={
           <div className="min-h-screen bg-black text-white overflow-x-hidden">
             {/* Floating Elements */}
@@ -283,17 +288,13 @@ const App: React.FC = () => {
               ))}
             </div>
 
-
-            
-        
 {/* Navigation */}
 <nav className="fixed top-0 left-0 w-full z-[100] backdrop-blur-md bg-black bg-opacity-20 border-b border-white border-opacity-10">
   <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
     <div className="flex items-center justify-between h-16">
       <div className="flex items-center">
         <div className="flex-shrink-0">
-          {/* Replace the span with an img tag */}
-          <img src={logo} alt="Logo" className="h-16" /> {/* Adjust the height as needed */}
+          <img src={logo} alt="Logo" className="h-16" />
         </div>
         <div className="hidden md:block">
           <div className="ml-10 flex items-baseline space-x-4">
@@ -319,7 +320,6 @@ const App: React.FC = () => {
                 Resource
               </span>
               <div className="absolute top-full left-0 mt-1 w-48 bg-black bg-opacity-90 backdrop-blur-md rounded-md shadow-lg opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none group-hover:pointer-events-auto z-50">
-                {/* ✅ Use Link here */}
                 <Link
                   to="/live-webinar"
                   className="block px-4 py-2 text-sm text-white hover:bg-white hover:bg-opacity-10 transition-all duration-200"
@@ -375,10 +375,14 @@ const App: React.FC = () => {
         </button>
       </div>
       <div className="hidden md:block">
-        <button className="bg-gradient-to-r from-pink-500 to-blue-500 text-white px-4 py-2 rounded-md font-medium hover:from-pink-600 hover:to-blue-600 transition-all duration-300 cursor-pointer !rounded-button whitespace-nowrap">
-          Get Started
-        </button>
-      </div>
+  <Link to="/login" className="bg-gradient-to-r from-pink-500 to-blue-500 text-white px-4 py-2 rounded-md font-medium hover:from-pink-600 hover:to-blue-600 transition-all duration-300 cursor-pointer !rounded-button whitespace-nowrap mx-2">
+    Login
+  </Link>
+  <button className="bg-gradient-to-r from-pink-500 to-blue-500 text-white px-4 py-2 rounded-md font-medium hover:from-pink-600 hover:to-blue-600 transition-all duration-300 cursor-pointer !rounded-button whitespace-nowrap mx-2">
+    Get Started
+  </button>
+</div>
+
     </div>
   </div>
 </nav>
@@ -1260,4 +1264,4 @@ const App: React.FC = () => {
     </Router>
   );
 };
-export default App
+export default App ;
