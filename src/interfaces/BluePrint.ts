@@ -1,5 +1,5 @@
-import type { IUserDto } from "./user";
+import type { IUserDto } from "./User";
 
 export interface IBluePrintDto extends IUserDto{
-    
+
 }

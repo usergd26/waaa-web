@@ -1,4 +1,4 @@
-import type { IUserDto } from "./user";
+import type { IUserDto } from "./User";
 
 export interface IWebinarDto extends IUserDto {
     webinarId: number,
