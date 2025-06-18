@@ -134,7 +134,7 @@ const LiveWebinar = () => {
                   setLoading(true);
 
                   try {
-                    let payload: IWebinarDto = {name: formData.name, email: formData.email,phone: formData.phone, webinatId: 1 }
+                    let payload: IWebinarDto = {name: formData.name, email: formData.email,phone: formData.phone, webinarId: 1 }
                     const response = await interceptor.post('/registerwebinar', payload);
 
                     if (response.status !== 200) {
