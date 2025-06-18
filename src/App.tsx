@@ -21,6 +21,7 @@ import api from './assets/images/api.jpg';
 import automation from './assets/images/automation.jpg';
    {/* Import your logo image at the top of the file */}
 import logo from './assets/images/Waaa-logo.png'; 
+import type { IBluePrintDto } from './interfaces/BluePrint';
 
 
 
@@ -514,9 +515,9 @@ const App: React.FC = () => {
                       <form onSubmit={async (e) => {
                         e.preventDefault();
                         setLoading(true);
-
+                        let payload : IBluePrintDto = {name: formData.name, email: formData.email, phone: formData.phone  }
                         try {
-                          const response = await interceptor.post('/getblueprint', formData);
+                          const response = await interceptor.post('/blueprint', payload);
 
                           if (response.status !== 200) {
                             throw new Error('API request failed');
