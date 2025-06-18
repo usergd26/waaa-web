@@ -2,6 +2,7 @@ import { useState } from "react";
 import webdev from '../assets/images/web-dev.jpeg';
 import interceptor from "../interceptor";
 import payment from "../assets/images/payment.jpg"
+import type { IWebinarDto } from "../interfaces/Webinar";
 
 const LiveWebinar = () => {
   const [showModal, setShowModal] = useState(false);
@@ -133,7 +134,8 @@ const LiveWebinar = () => {
                   setLoading(true);
 
                   try {
-                    const response = await interceptor.post('/registerwebinar', formData);
+                    let payload: IWebinarDto = {name: formData.name, email: formData.email,phone: formData.phone, webinatId: 1 }
+                    const response = await interceptor.post('/registerwebinar', payload);
 
                     if (response.status !== 200) {
                       throw new Error('API request failed');

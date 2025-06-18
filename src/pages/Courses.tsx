@@ -5,8 +5,9 @@ import django from '../assets/courses/django.jpg';
 import java from '../assets/courses/java.jpg';
 import php from '../assets/courses/php.jpg';
 import python from '../assets/courses/python.jpg';
+import type { Course } from "../interfaces/Courses";
 
-const initialCourses = [
+const initialCourses : Course[] = [
   {
     title: "Python Development",
     rating: 4.3,
