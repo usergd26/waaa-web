@@ -1,10 +1,10 @@
 import { useState } from "react";
-import c from './assets/courses/C.jpg';
-import datascience from './assets/courses/datascience.jpg';
-import django from './assets/courses/django.jpg';
-import java from './assets/courses/java.jpg';
-import php from './assets/courses/php.jpg';
-import python from './assets/courses/python.jpg';
+import c from '../assets/courses/C.jpg';
+import datascience from '../assets/courses/datascience.jpg';
+import django from '../assets/courses/django.jpg';
+import java from '../assets/courses/java.jpg';
+import php from '../assets/courses/php.jpg';
+import python from '../assets/courses/python.jpg';
 
 const initialCourses = [
   {

@@ -1,7 +1,7 @@
 import { useState } from "react";
-import webdev from './assets/images/web-dev.jpeg';
-import interceptor from "./interceptor";
-import payment from "./assets/images/payment.jpg"
+import webdev from '../assets/images/web-dev.jpeg';
+import interceptor from "../interceptor";
+import payment from "../assets/images/payment.jpg"
 
 const LiveWebinar = () => {
   const [showModal, setShowModal] = useState(false);

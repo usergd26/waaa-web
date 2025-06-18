@@ -7,10 +7,10 @@ import { motion } from 'framer-motion';
 import interceptor from './interceptor';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import { Link } from 'react-router-dom';
-import Login from './Login';
-import Dashboard from './Dashboard';
-import LiveWebinar from './LiveWebinar'; // adjust path as per your structure
-import Courses from './Courses';
+import Login from './pages/Login';
+import Dashboard from './pages/Dashboard';
+import LiveWebinar from './pages/LiveWebinar'; // adjust path as per your structure
+import Courses from './pages/Courses';
 import bg1 from './assets/images/bg1.jpg';
 import bg2 from './assets/images/bg2.jpg';
 import bg3 from './assets/images/bg3.jpg';
