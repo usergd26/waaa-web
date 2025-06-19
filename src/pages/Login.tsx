@@ -1,7 +1,8 @@
 // src/Login.tsx
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { AuthService, type LoginRequest } from '../services/AuthService';
+import { AuthService } from '../services/AuthService';
+import type { LoginRequest } from '../interfaces/Authentication';
 
 const Login: React.FC = () => {
   const [email, setEmail] = useState('');
@@ -21,7 +22,6 @@ const Login: React.FC = () => {
         // Redirect to the Dashboard on successful login
         navigate('/dashboard');
       }
-
     }
 
   };
