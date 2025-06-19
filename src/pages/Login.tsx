@@ -24,6 +24,9 @@ const Login: React.FC = () => {
         // Redirect to the Dashboard on successful login
         navigate('/dashboard');
       }
+      else{
+        alert('Unauthorized acess')
+      }
     }
     setLoading(false);
   };
