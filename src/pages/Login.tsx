@@ -1,26 +1,29 @@
 // src/Login.tsx
 import React, { useState } from 'react';
-//import { useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { AuthService, type LoginRequest } from '../services/AuthService';
 
 const Login: React.FC = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  //const navigate = useNavigate();
+  const navigate = useNavigate();
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
-    const cred: LoginRequest = {email: email, password: password}
-    AuthService.login(cred)
+    const cred: LoginRequest = { email: email, password: password }
+    const response = await AuthService.login(cred)
 
-    // Check credentials
-    // if (email === 'SHREYASINGH7297@GMAIL.COM' && password === 'admin1234') {
-    //   // Redirect to the Dashboard on successful login
-    //   navigate('/dashboard');
-    // } else {
-    //   alert('Invalid email or password. Please try again.');
-    // }
+    if (response) {
+      const isAdmin = await AuthService.isAdminUser();
+
+      if (isAdmin) {
+        // Redirect to the Dashboard on successful login
+        navigate('/dashboard');
+      }
+
+    }
+
   };
 
   return (
