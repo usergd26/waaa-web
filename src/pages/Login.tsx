@@ -1,22 +1,34 @@
 // src/Login.tsx
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { AuthService } from '../services/AuthService';
+import type { LoginRequest } from '../interfaces/Authentication';
 
 const Login: React.FC = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const navigate = useNavigate();
+    const [loading, setLoading] = useState(false);
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    setLoading(true);
 
-    // Check credentials
-    if (email === 'SHREYASINGH7297@GMAIL.COM' && password === 'admin1234') {
-      // Redirect to the Dashboard on successful login
-      navigate('/dashboard');
-    } else {
-      alert('Invalid email or password. Please try again.');
+    const cred: LoginRequest = { email: email, password: password }
+    const response = await AuthService.login(cred)
+
+    if (response) {
+      const isAdmin = await AuthService.isAdminUser();
+
+      if (isAdmin) {
+        // Redirect to the Dashboard on successful login
+        navigate('/dashboard');
+      }
+      else{
+        alert('Unauthorized acess')
+      }
     }
+    setLoading(false);
   };
 
   return (
@@ -35,6 +47,11 @@ const Login: React.FC = () => {
           />
         </div>
         <div className="mb-4">
+          {loading && (
+                        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+                          <div className="w-12 h-12 border-4 border-white border-t-blue-500 rounded-full animate-spin"></div>
+                        </div>
+                      )}
           <label className="block mb-2" htmlFor="password">Password</label>
           <input
             type="password"
