@@ -17,7 +17,7 @@ const App: React.FC = () => {
         <Route path="/live-webinar" element={<LiveWebinar />} />
         <Route path="/Courses" element={<Courses />} />
         <Route path="/login" element={<Login />} /> {/* Add this line for the login route */}
-        <Route path="/dashboard" element={<Dashboard />} /> {/* Add this line for the dashboard route */}
+        <Route path="/dashboard" element={<Dashboard/>} /> {/* Add this line for the dashboard route */}
         <Route path="/" element={<Home />}
         />
       </Routes>

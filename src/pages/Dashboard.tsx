@@ -16,9 +16,6 @@ type AdminProfileType = {
   picture: string; // Added picture field
 };
 
-type DashboardProps = {
-  adminEmail: string;
-};
 
 const AdminProfile: React.FC<{
   profile: AdminProfileType;
@@ -165,7 +162,7 @@ const NAV_ITEMS = ['Admin Profile', 'Student Management', 'Dashboard Statistics'
 
 type NavItem = typeof NAV_ITEMS[number];
 
-const Dashboard: React.FC<DashboardProps> = ({ adminEmail }) => {
+const Dashboard: React.FC = ({  }) => {
   const [currentView, setCurrentView] = useState<NavItem>('Admin Profile');
 
   const [students, setStudents] = useState<Student[]>([
@@ -175,7 +172,7 @@ const Dashboard: React.FC<DashboardProps> = ({ adminEmail }) => {
 
   const [adminProfile, setAdminProfile] = useState<AdminProfileType>({
     name: 'Admin Name', // Pre-filled name
-    email: adminEmail,
+    email: '',
     phone: '123-456-7890', // Pre-filled phone number
     picture: 'https://images.unsplash.com/photo-1633332755192-727a05c4013d?ixlib=rb-4.0.3&auto=format&fit=crop&w=880&q=80', // Default picture
   });
