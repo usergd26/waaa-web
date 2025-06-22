@@ -26,12 +26,41 @@ const Home = () => {
     const [floatingElements, setFloatingElements] = useState<Array<{ x: number; y: number; vx: number; vy: number; size: number; opacity: number }>>([]);
     // Initialize floating elements
     const [loading, setLoading] = useState(false);
+    const [showForm, setShowForm] = useState(false);
+
 
     const [formData, setFormData] = useState({
         name: '',
         email: '',
         phone: '',
     });
+
+
+   
+
+    const handleSubmit = async (e: React.FormEvent) => {
+        e.preventDefault();
+        setLoading(true);
+
+        const payload: IBluePrintDto = {
+            name: formData.name,
+            email: formData.email,
+            phone: formData.phone,
+        };
+        
+        try {
+            const response = await interceptor.post('/blueprint', payload);
+            if (response.status !== 200) throw new Error('API request failed');
+            alert('Thank you! We will contact you shortly.');
+        } catch (error) {
+            console.error('Error submitting form:', error);
+            alert('Something went wrong. Please try again later.');
+        } finally {
+            setFormData({ name: '', email: '', phone: '' });
+            setLoading(false);
+        }
+    };
+
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         setFormData(prev => ({
@@ -199,29 +228,45 @@ const Home = () => {
         }
     }, []);
     // Counter animation for stats
-    const Counter = ({ end, duration = 2000, prefix = '', suffix = '' }: { end: number; duration?: number; prefix?: string; suffix?: string }) => {
-        const [count, setCount] = useState(0);
-        const countRef = useRef(0);
+    type CounterProps = {
+        end: number;
+        duration?: number;
+        prefix?: string;
+        suffix?: string;
+        start?: number;
+      };
+      
+      const Counter = ({
+        end,
+        duration = 2000,
+        prefix = "",
+        suffix = "",
+        start = 0,
+      }: CounterProps) => {
+        // ✅ Now the type is being used
+        const [count, setCount] = useState(start);
         const startTimeRef = useRef<number | null>(null);
+      
         useEffect(() => {
-            const animate = (timestamp: number) => {
-                if (!startTimeRef.current) startTimeRef.current = timestamp;
-                const progress = timestamp - startTimeRef.current;
-                const percentage = Math.min(progress / duration, 1);
-                countRef.current = Math.floor(percentage * end);
-                setCount(countRef.current);
-                if (percentage < 1) {
-                    requestAnimationFrame(animate);
-                }
-            };
-            requestAnimationFrame(animate);
-            return () => {
-                startTimeRef.current = null;
-            };
-        }, [end, duration]);
+          const animate = (timestamp: number) => {
+            if (!startTimeRef.current) startTimeRef.current = timestamp;
+            const progress = timestamp - startTimeRef.current;
+            const percentage = Math.min(progress / duration, 1);
+            const current = Math.floor(start + percentage * (end - start));
+            setCount(current);
+            if (percentage < 1) {
+              requestAnimationFrame(animate);
+            }
+          };
+          requestAnimationFrame(animate);
+          return () => {
+            startTimeRef.current = null;
+          };
+        }, [end, duration, start]);
+      
         return <span>{prefix}{count}{suffix}</span>;
-    };
-
+      };
+      
     return (
         <div className="min-h-screen bg-black text-white overflow-x-hidden">
             {/* Floating Elements */}
@@ -439,91 +484,80 @@ const Home = () => {
                     <div className="grid md:grid-cols-2 gap-8 items-center">
                         <div className="backdrop-blur-lg bg-black bg-opacity-20 p-8 rounded-2xl border border-white border-opacity-10">
                             <h1 className="text-4xl md:text-5xl lg:text-6xl font-extrabold mb-4">
-                                <span className="block bg-clip-text text-transparent bg-gradient-to-r from-pink-500 to-blue-500 animate-pulse">Ultra-Modern</span>
-                                <span className="block mt-2 text-white">Digital Experiences</span>
+                                <span className="block bg-clip-text text-transparent bg-gradient-to-r from-pink-500 to-blue-500 animate-pulse">We Build To Thrive</span>
+                                <span className="block mt-2 text-white">25 Years In The Future</span>
                             </h1>
                             <p className="text-xl text-gray-300 mb-8">
                                 You dream it. We build it. Let's make the future happen — together at WAAA.
                             </p>
-                            <div className="flex flex-wrap gap-4">
-                                <button
-                                    onClick={() => {
-                                        const element = document.getElementById('schedule-call');
-                                        element?.scrollIntoView({ behavior: 'smooth' });
-                                    }}
-                                    className="bg-gradient-to-r from-pink-500 to-blue-500 text-white px-6 py-3 rounded-md font-medium hover:from-pink-600 hover:to-blue-600 transition-all duration-300 text-lg cursor-pointer !rounded-button whitespace-nowrap group relative overflow-hidden"
-                                >
-                                    <span className="relative z-10">Schedule Free Call</span>
-                                    <div className="absolute inset-0 bg-white opacity-0 group-hover:opacity-20 transition-opacity duration-300"></div>
-                                </button>
-                            </div>
-                            {/* Schedule Call Form */}
-                            <div id="schedule-call" className="mt-8 p-6 backdrop-blur-lg bg-black bg-opacity-30 rounded-2xl border border-white border-opacity-20">
-                                <h3 className="text-xl font-bold mb-4 text-white">Schedule a Free Call & Get Our Blueprint</h3>
-                                {loading && (
-                                    <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-                                        <div className="w-12 h-12 border-4 border-white border-t-blue-500 rounded-full animate-spin"></div>
-                                    </div>
-                                )}
+                            <div className="flex flex-col gap-6">
+            {/* Button */}
+            <div className="flex flex-wrap gap-4">
+                <button
+                    onClick={() => {
+                        setShowForm(true);
+                        setTimeout(() => {
+                            const element = document.getElementById('schedule-call');
+                            element?.scrollIntoView({ behavior: 'smooth' });
+                        }, 100);
+                    }}
+                    className="bg-gradient-to-r from-pink-500 to-blue-500 text-white px-6 py-3 rounded-md font-medium hover:from-pink-600 hover:to-blue-600 transition-all duration-300 text-lg cursor-pointer !rounded-button whitespace-nowrap group relative overflow-hidden"
+                >
+                    <span className="relative z-10">Schedule Free Call</span>
+                    <div className="absolute inset-0 bg-white opacity-0 group-hover:opacity-20 transition-opacity duration-300"></div>
+                </button>
+            </div>
 
-                                <form onSubmit={async (e) => {
-                                    e.preventDefault();
-                                    setLoading(true);
-                                    let payload: IBluePrintDto = { name: formData.name, email: formData.email, phone: formData.phone }
-                                    try {
-                                        const response = await interceptor.post('/blueprint', payload);
+            {/* Conditional Form */}
+            {showForm && (
+                <div id="schedule-call" className="mt-8 p-6 backdrop-blur-lg bg-black bg-opacity-30 rounded-2xl border border-white border-opacity-20">
+                    <h3 className="text-xl font-bold mb-4 text-white">Schedule a Free Call & Get Our Blueprint</h3>
 
-                                        if (response.status !== 200) {
-                                            throw new Error('API request failed');
-                                        }
-                                        alert('Thank you! We will contact you shortly.');
+                    {loading && (
+                        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+                            <div className="w-12 h-12 border-4 border-white border-t-blue-500 rounded-full animate-spin"></div>
+                        </div>
+                    )}
 
-                                    }
-                                    catch (error) {
-                                        console.error('Error submitting form:', error);
-                                        alert('Something went wrong. Please try again later.');
-                                    }
-                                    finally {
-                                        setFormData({ name: '', email: '', phone: '' });
-                                        setLoading(false);
-                                    }
-                                }}>
-                                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-4">
-                                        <input
-                                            type="text"
-                                            name='name'
-                                            placeholder="Your Name"
-                                            value={formData.name}
-                                            onChange={handleChange}
-                                            className="w-full px-4 py-2 bg-black bg-opacity-50 border border-white border-opacity-20 rounded-md text-white focus:outline-none focus:ring-2 focus:ring-pink-500 focus:border-transparent"
-                                            required
-                                        />
-                                        <input
-                                            type="email"
-                                            name='email'
-                                            placeholder="Your Email"
-                                            value={formData.email}
-                                            onChange={handleChange}
-                                            className="w-full px-4 py-2 bg-black bg-opacity-50 border border-white border-opacity-20 rounded-md text-white focus:outline-none focus:ring-2 focus:ring-pink-500 focus:border-transparent"
-                                            required
-                                        />
-                                    </div>
-                                    <input
-                                        type="tel"
-                                        name='phone'
-                                        placeholder="Phone Number"
-                                        value={formData.phone}
-                                        onChange={handleChange}
-                                        className="w-full px-4 py-2 mb-4 bg-black bg-opacity-50 border border-white border-opacity-20 rounded-md text-white focus:outline-none focus:ring-2 focus:ring-pink-500 focus:border-transparent"
-                                    />
-                                    <button
-                                        type="submit"
-                                        className="w-full bg-gradient-to-r from-pink-500 to-blue-500 text-white px-6 py-3 rounded-md font-medium hover:from-pink-600 hover:to-blue-600 transition-all duration-300 cursor-pointer !rounded-button whitespace-nowrap"
-                                    >
-                                        Get Free Blueprint
-                                    </button>
-                                </form>
-                            </div>
+                    <form onSubmit={handleSubmit}>
+                        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-4">
+                            <input
+                                type="text"
+                                name="name"
+                                placeholder="Your Name"
+                                value={formData.name}
+                                onChange={handleChange}
+                                className="w-full px-4 py-2 bg-black bg-opacity-50 border border-white border-opacity-20 rounded-md text-white focus:outline-none focus:ring-2 focus:ring-pink-500 focus:border-transparent"
+                                required
+                            />
+                            <input
+                                type="email"
+                                name="email"
+                                placeholder="Your Email"
+                                value={formData.email}
+                                onChange={handleChange}
+                                className="w-full px-4 py-2 bg-black bg-opacity-50 border border-white border-opacity-20 rounded-md text-white focus:outline-none focus:ring-2 focus:ring-pink-500 focus:border-transparent"
+                                required
+                            />
+                        </div>
+                        <input
+                            type="tel"
+                            name="phone"
+                            placeholder="Phone Number"
+                            value={formData.phone}
+                            onChange={handleChange}
+                            className="w-full px-4 py-2 mb-4 bg-black bg-opacity-50 border border-white border-opacity-20 rounded-md text-white focus:outline-none focus:ring-2 focus:ring-pink-500 focus:border-transparent"
+                        />
+                        <button
+                            type="submit"
+                            className="w-full bg-gradient-to-r from-pink-500 to-blue-500 text-white px-6 py-3 rounded-md font-medium hover:from-pink-600 hover:to-blue-600 transition-all duration-300 cursor-pointer !rounded-button whitespace-nowrap"
+                        >
+                            Get Free Blueprint
+                        </button>
+                    </form>
+                </div>
+            )}
+        </div>
                         </div>
                         <div className="hidden md:block relative">
                             {/* This div is intentionally left empty as the hero background image covers this area */}
@@ -643,25 +677,27 @@ const Home = () => {
                                 Today, we've grown into a team of 32 experts, serving clients globally and delivering cutting-edge solutions that drive real business results. Our commitment to innovation and excellence has earned us recognition as a leader in the digital transformation space.
                             </p>
                             <div className="flex items-center gap-8">
-                                <div className="text-center">
-                                    <div className="text-3xl font-bold text-pink-500 mb-2">
-                                        <Counter end={200} suffix="+" />
-                                    </div>
-                                    <p className="text-sm text-gray-400">Projects Completed</p>
-                                </div>
-                                <div className="text-center">
-                                    <div className="text-3xl font-bold text-blue-500 mb-2">
-                                        <Counter end={50} suffix="+" />
-                                    </div>
-                                    <p className="text-sm text-gray-400">Global Clients</p>
-                                </div>
-                                <div className="text-center">
-                                    <div className="text-3xl font-bold text-purple-500 mb-2">
-                                        <Counter end={15} suffix="+" />
-                                    </div>
-                                    <p className="text-sm text-gray-400">Industry Awards</p>
-                                </div>
-                            </div>
+      <div className="text-center">
+        <div className="text-3xl font-bold text-pink-500 mb-2">
+          <Counter end={200} start={80} suffix="+" />
+        </div>
+        <p className="text-sm text-gray-400">Projects Completed</p>
+      </div>
+
+      <div className="text-center">
+        <div className="text-3xl font-bold text-blue-500 mb-2">
+          <Counter end={80} start={50} suffix="+" />
+        </div>
+        <p className="text-sm text-gray-400">Global Clients</p>
+      </div>
+
+      <div className="text-center">
+        <div className="text-3xl font-bold text-purple-500 mb-2">
+          <Counter end={15} start={10} suffix="+" />
+        </div>
+        <p className="text-sm text-gray-400">Industry Awards</p>
+      </div>
+    </div>
                         </div>
                         <div className="relative">
                             <div className="absolute -inset-4 bg-gradient-to-r from-pink-500 to-blue-500 rounded-2xl opacity-30 blur-lg"></div>
@@ -669,7 +705,7 @@ const Home = () => {
                                 <h3 className="text-2xl font-bold mb-6 text-gray-100">Success Story: TechVision Transformation</h3>
                                 <div className="mb-6">
                                     <img
-                                        src="https://readdy.ai/api/search-image?query=modern%20tech%20company%20office%20transformation%2C%20before%20and%20after%20visualization%2C%20digital%20workspace%20evolution%2C%20sleek%20design%20with%20purple%20and%20blue%20accents%2C%20professional%20business%20environment%2C%20high%20quality%20corporate%20photography&width=800&height=400&seq=success-story-1&orientation=landscape"
+                                        src="https://www.sthapatigroup.com/wp-content/uploads/2020/08/DSC_0062-scaled-e1598250429198.jpg"
                                         alt="Success Story"
                                         className="w-full h-48 object-cover rounded-lg mb-6"
                                     />
