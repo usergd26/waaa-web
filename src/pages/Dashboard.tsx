@@ -110,7 +110,7 @@ const Dashboard: React.FC = ({ }) => {
       console.error('Error fetching webinar registrations:', error);
     }
     finally {
-      setLoading(true);
+      setLoading(false);
     }
   };
 
