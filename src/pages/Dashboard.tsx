@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import type { IWebinarRegistration } from '../interfaces/Webinar';
 import { data } from 'react-router-dom';
+import { WebinarService } from '../services/WebinarService';
 
 // type Student = {
 //   id: number;
@@ -11,19 +12,15 @@ import { data } from 'react-router-dom';
 //   phone: string;
 // };
 
-type AdminProfileType = {
-  name: string;
-  email: string;
-  phone: string;
-  picture: string; // Added picture field
-};
 
 
 const StudentManagement: React.FC<{
+
   students: IWebinarRegistration[];
   onAdd: () => void;
   onEdit: (id: number) => void;
   onDelete: (id: number) => void;
+
 }> = ({ students, onAdd, onEdit, onDelete }) => (
   <div className="bg-white p-6 rounded-lg max-w-5xl mx-auto mt-8 shadow-md overflow-x-auto">
     <h2 className="text-2xl mb-6 text-gray-800 font-semibold">Student Management</h2>
@@ -95,31 +92,26 @@ const DashboardStats: React.FC<{ totalStudents: number; totalRevenue: number }> 
   </div>
 );
 
-const NAV_ITEMS = [ 'Student Management', 'Dashboard Statistics'] as const;
+const NAV_ITEMS = ['Student Management', 'Dashboard Statistics'] as const;
 
 type NavItem = typeof NAV_ITEMS[number];
 
-const Dashboard: React.FC = ({  }) => {
+const Dashboard: React.FC = ({ }) => {
   const [currentView, setCurrentView] = useState<NavItem>('Student Management');
 
-   useEffect(() => {
-    const fetchStudents = async () => {
-      try {
-        const response = await fetch('https://localhost:44388/webinarregistrations');
-        if (!response.ok) {
-          throw new Error('Failed to fetch students');
-        }
-        const data: IWebinarRegistration[] = await response.json();
-        setStudents(data);
-      } catch (error) {
-        console.error('Error fetching students:', error);
-      } finally {
-        //setLoading(false);
-      }
-    };
-      fetchStudents();
+  useEffect(() => {
+  const fetchStudents = async () => {
+    try {
+      const response = await WebinarService.getWebinarRegistrations();
+      setStudents(response);
+    } catch (error) {
+      console.error('Error fetching webinar registrations:', error);
+    }
+  };
 
-  },[])
+  fetchStudents();
+}, []);
+
 
   const [students, setStudents] = useState<IWebinarRegistration[]>([]);
 
@@ -186,7 +178,11 @@ const Dashboard: React.FC = ({  }) => {
     setStudents(prev => prev.filter(s => s.id !== id));
   };
 
+
+
   return (
+
+
     <div className="min-h-screen bg-gray-50 text-gray-800 flex flex-col">
       {/* Navbar */}
       <nav className="bg-gray-200 flex items-center justify-between px-6 py-4 shadow-md sticky top-0 z-50">
@@ -198,9 +194,8 @@ const Dashboard: React.FC = ({  }) => {
           {NAV_ITEMS.map(item => (
             <li key={item}>
               <button
-                className={`hover:text-green-600 focus:outline-none focus:text-green-600 transition-colors ${
-                  currentView === item ? 'text-green-600 underline' : 'text-gray-600'
-                }`}
+                className={`hover:text-green-600 focus:outline-none focus:text-green-600 transition-colors ${currentView === item ? 'text-green-600 underline' : 'text-gray-600'
+                  }`}
                 onClick={() => setCurrentView(item)}
                 aria-current={currentView === item ? 'page' : undefined}
               >
