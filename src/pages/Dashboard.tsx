@@ -1,13 +1,15 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
+import type { IWebinarRegistration } from '../interfaces/Webinar';
+import { data } from 'react-router-dom';
 
-type Student = {
-  id: number;
-  name: string;
-  email: string;
-  course: string;
-  payment: number;
-  phone: string;
-};
+// type Student = {
+//   id: number;
+//   name: string;
+//   email: string;
+//   course: string;
+//   payment: number;
+//   phone: string;
+// };
 
 type AdminProfileType = {
   name: string;
@@ -17,73 +19,8 @@ type AdminProfileType = {
 };
 
 
-const AdminProfile: React.FC<{
-  profile: AdminProfileType;
-  onChange: (field: keyof AdminProfileType, value: string) => void;
-  onPasswordChange: () => void;
-}> = ({ profile, onChange, onPasswordChange }) => (
-  <div className="bg-white p-6 rounded-lg max-w-md mx-auto mt-8 shadow-md">
-    <h2 className="text-2xl mb-6 text-gray-800 font-semibold">Admin Profile</h2>
-    <div className="mb-4 text-center">
-      <img
-        src={profile.picture}
-        alt="Admin Profile"
-        className="w-32 h-32 rounded-full object-cover mx-auto mb-4 border-2 border-blue-500"
-      />
-      <button
-        onClick={() => {
-          const newPicture = prompt('Enter new profile picture URL:', profile.picture);
-          if (newPicture) {
-            onChange('picture', newPicture);
-          }
-        }}
-        className="text-blue-600 underline"
-      >
-        Change Picture
-      </button>
-    </div>
-    <div className="mb-4">
-      <label className="block text-gray-600 mb-1">Name:</label>
-      <input
-        type="text"
-        value={profile.name}
-        onChange={e => onChange('name', e.target.value)}
-        className="w-full p-3 rounded border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500"
-        placeholder="Your Name"
-      />
-    </div>
-    <div className="mb-4">
-      <label className="block text-gray-600 mb-1">Email:</label>
-      <input
-        type="email"
-        value={profile.email}
-        className="w-full p-3 rounded border border-gray-300 bg-gray-100 cursor-not-allowed"
-        readOnly
-      />
-      <p className="text-xs text-gray-500 mt-1">Email is fixed and cannot be changed.</p>
-    </div>
-    <div className="mb-6">
-      <label className="block text-gray-600 mb-1">Phone Number:</label>
-      <input
-        type="tel"
-        value={profile.phone}
-        onChange={e => onChange('phone', e.target.value)}
-        className="w-full p-3 rounded border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500"
-        placeholder="Your Phone Number"
-      />
-    </div>
-    <button
-      onClick={onPasswordChange}
-      className="bg-blue-600 hover:bg-blue-700 transition-colors text-white py-3 px-6 rounded w-full font-semibold"
-      aria-label="Send password change link"
-    >
-      Change Password (via Email Link)
-    </button>
-  </div>
-);
-
 const StudentManagement: React.FC<{
-  students: Student[];
+  students: IWebinarRegistration[];
   onAdd: () => void;
   onEdit: (id: number) => void;
   onDelete: (id: number) => void;
@@ -103,15 +40,15 @@ const StudentManagement: React.FC<{
       </thead>
       <tbody>
         {students.map(student => (
-          <tr key={student.id} className="odd:bg-gray-100 even:bg-gray-50">
+          <tr key={student.registrationId} className="odd:bg-gray-100 even:bg-gray-50">
             <td className="border border-gray-300 px-4 py-2">{student.name}</td>
             <td className="border border-gray-300 px-4 py-2">{student.email}</td>
-            <td className="border border-gray-300 px-4 py-2">{student.course}</td>
-            <td className="border border-gray-300 px-4 py-2">${student.payment}</td>
+            <td className="border border-gray-300 px-4 py-2">{student.webinarName}</td>
+            <td className="border border-gray-300 px-4 py-2">${student.paymentStatus}</td>
             <td className="border border-gray-300 px-4 py-2">{student.phone}</td>
             <td className="border border-gray-300 px-4 py-2 text-center space-x-2">
               <button
-                onClick={() => onEdit(student.id)}
+                onClick={() => onEdit(student.registrationId)}
                 className="bg-yellow-500 hover:bg-yellow-600 px-3 py-1 rounded text-black font-semibold"
                 aria-label={`Edit student ${student.name}`}
               >
@@ -120,7 +57,7 @@ const StudentManagement: React.FC<{
               <button
                 onClick={() => {
                   if (window.confirm(`Are you sure you want to delete student "${student.name}"? This action cannot be undone.`)) {
-                    onDelete(student.id);
+                    onDelete(student.registrationId);
                   }
                 }}
                 className="bg-red-600 hover:bg-red-700 px-3 py-1 rounded text-white font-semibold"
@@ -158,43 +95,44 @@ const DashboardStats: React.FC<{ totalStudents: number; totalRevenue: number }> 
   </div>
 );
 
-const NAV_ITEMS = ['Admin Profile', 'Student Management', 'Dashboard Statistics'] as const;
+const NAV_ITEMS = [ 'Student Management', 'Dashboard Statistics'] as const;
 
 type NavItem = typeof NAV_ITEMS[number];
 
 const Dashboard: React.FC = ({  }) => {
-  const [currentView, setCurrentView] = useState<NavItem>('Admin Profile');
+  const [currentView, setCurrentView] = useState<NavItem>('Student Management');
 
-  const [students, setStudents] = useState<Student[]>([
-    { id: 1, name: 'John Doe', email: 'john@example.com', course: 'Math', payment: 100, phone: '123-456-7890' },
-    { id: 2, name: 'Jane Smith', email: 'jane@example.com', course: 'Science', payment: 150, phone: '098-765-4321' },
-  ]);
+   useEffect(() => {
+    const fetchStudents = async () => {
+      try {
+        const response = await fetch('https://localhost:44388/webinarregistrations');
+        if (!response.ok) {
+          throw new Error('Failed to fetch students');
+        }
+        const data: IWebinarRegistration[] = await response.json();
+        setStudents(data);
+      } catch (error) {
+        console.error('Error fetching students:', error);
+      } finally {
+        //setLoading(false);
+      }
+    };
+      fetchStudents();
 
-  const [adminProfile, setAdminProfile] = useState<AdminProfileType>({
-    name: 'Admin Name', // Pre-filled name
-    email: '',
-    phone: '123-456-7890', // Pre-filled phone number
-    picture: 'https://images.unsplash.com/photo-1633332755192-727a05c4013d?ixlib=rb-4.0.3&auto=format&fit=crop&w=880&q=80', // Default picture
-  });
+  },[])
+
+  const [students, setStudents] = useState<IWebinarRegistration[]>([]);
 
   const totalStudents = students.length;
-  const totalRevenue = students.reduce((acc, student) => acc + student.payment, 0);
+  //const totalRevenue = students.reduce((acc, student) => acc + student.paymentStatus, 0);
 
   const handleLogout = () => {
     console.log('Logging out...');
     window.location.href = '/';
   };
 
-  const handleProfileChange = (field: keyof AdminProfileType, value: string) => {
-    setAdminProfile(prev => ({ ...prev, [field]: value }));
-  };
-
-  const handlePasswordChange = () => {
-    alert(`Password change link has been sent to ${adminProfile.email}. Please check your email to reset your password.`);
-  };
-
   const handleAddStudent = () => {
-    const newId = students.length ? Math.max(...students.map(s => s.id)) + 1 : 1;
+    const newId = students.length ? Math.max(...students.map(s => s.registrationId)) + 1 : 1;
     const newStudentName = prompt('Enter new student name:');
     if (!newStudentName) return;
     const newStudentEmail = prompt('Enter new student email:');
@@ -241,7 +179,7 @@ const Dashboard: React.FC = ({  }) => {
       payment,
       phone,
     };
-    setStudents(prev => prev.map(s => (s.id === id ? updatedStudent : s)));
+    setStudents(prev => prev.map(s => (s.webinarId === id ? updatedStudent : s)));
   };
 
   const handleDeleteStudent = (id: number) => {
