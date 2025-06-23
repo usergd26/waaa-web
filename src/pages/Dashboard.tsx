@@ -103,10 +103,14 @@ const Dashboard: React.FC = ({ }) => {
 
   const fetchStudents = async () => {
     try {
+      setLoading(true);
       const response = await WebinarService.getWebinarRegistrations();
       setStudents(response);
     } catch (error) {
       console.error('Error fetching webinar registrations:', error);
+    }
+    finally {
+      setLoading(true);
     }
   };
 
