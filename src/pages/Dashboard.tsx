@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import type { IWebinarRegistration } from '../interfaces/Webinar';
 import { WebinarService } from '../services/WebinarService';
+import Dialog from '../components/Dialog';
 
 const StudentManagement: React.FC<{
 
@@ -8,8 +9,8 @@ const StudentManagement: React.FC<{
   onAdd: () => void;
   onEdit: (id: number) => void;
   onDelete: (id: number) => void;
-
-}> = ({ students, onAdd, onEdit, onDelete }) => (
+  onMarkAsPaid: (id: number) => void;
+}> = ({ students, onAdd, onMarkAsPaid }) => (
   <div className="bg-white p-6 rounded-lg max-w-5xl mx-auto mt-8 shadow-md overflow-x-auto">
     <h2 className="text-2xl mb-6 text-gray-800 font-semibold">Student Management</h2>
     <table className="min-w-full table-auto border-collapse border border-gray-300 text-gray-800">
@@ -18,7 +19,7 @@ const StudentManagement: React.FC<{
           <th className="border border-gray-300 px-4 py-2 text-left">Name</th>
           <th className="border border-gray-300 px-4 py-2 text-left">Email</th>
           <th className="border border-gray-300 px-4 py-2 text-left">Course Enrolled</th>
-          <th className="border border-gray-300 px-4 py-2 text-left">Payment Amount</th>
+          <th className="border border-gray-300 px-4 py-2 text-left">Payment Status</th>
           <th className="border border-gray-300 px-4 py-2 text-left">Phone Number</th>
           <th className="border border-gray-300 px-4 py-2 text-center">Actions</th>
         </tr>
@@ -29,10 +30,28 @@ const StudentManagement: React.FC<{
             <td className="border border-gray-300 px-4 py-2">{student.name}</td>
             <td className="border border-gray-300 px-4 py-2">{student.email}</td>
             <td className="border border-gray-300 px-4 py-2">{student.webinarName}</td>
-            <td className="border border-gray-300 px-4 py-2">${student.paymentStatus}</td>
+            <td
+              className={`border border-gray-300 px-4 py-2 font-semibold text-center
+    ${student.paymentStatus ? 'text-green-600 bg-green-100' : 'text-red-600 bg-red-100'}`}
+            >
+              {student.paymentStatus ? '✅ Done' : '❌ Pending'}
+            </td>
             <td className="border border-gray-300 px-4 py-2">{student.phone}</td>
             <td className="border border-gray-300 px-4 py-2 text-center space-x-2">
-              <button
+              {
+                <button
+                  onClick={() => onMarkAsPaid(student.registrationId)}
+                  disabled={student.paymentStatus}
+                  className={`px-3 py-1 rounded font-semibold
+                    ${student.paymentStatus
+                      ? 'bg-gray-300 text-gray-600 cursor-not-allowed'
+                      : 'bg-green-600 hover:bg-green-800 text-black'}`}
+                >
+                  Mark as paid
+                </button>
+
+
+              /*<button 
                 onClick={() => onEdit(student.registrationId)}
                 className="bg-yellow-500 hover:bg-yellow-600 px-3 py-1 rounded text-black font-semibold"
                 aria-label={`Edit student ${student.name}`}
@@ -49,7 +68,7 @@ const StudentManagement: React.FC<{
                 aria-label={`Delete student ${student.name}`}
               >
                 Delete
-              </button>
+              </button> */}
             </td>
           </tr>
         ))}
@@ -72,7 +91,13 @@ type NavItem = typeof NAV_ITEMS[number];
 const Dashboard: React.FC = ({ }) => {
   const [currentView, setCurrentView] = useState<NavItem>('Student Management');
 
-  useEffect(() => {
+  const [isLogoutDialogOpen, setLogoutDialogOpen] = useState(false);
+  const [isPaymentDialogOpen, setPaymentDialogOpen] = useState(false);
+  const [selectedStudentId, setSelectedStudentId] = useState<number>(0);
+
+  const handleLogoutDialogOpen = () => setLogoutDialogOpen(true);
+  const handleLogoutCancel = () => setLogoutDialogOpen(false);
+
     const fetchStudents = async () => {
       try {
         const response = await WebinarService.getWebinarRegistrations();
@@ -82,25 +107,51 @@ const Dashboard: React.FC = ({ }) => {
       }
     };
 
+
+  const handleLogoutConfirm = () => {
+    window.location.href = '/';
+    setLogoutDialogOpen(false);
+  };
+
+  const handlePaymentCancel = () => setPaymentDialogOpen(false);
+  const handlePaymentConfirm = async () => {
+    try {
+      await WebinarService.addPayment(selectedStudentId);
+      await fetchStudents();
+    }
+    catch (error) {
+      console.log(error)
+    }
+    finally {
+      setPaymentDialogOpen(false);
+      setSelectedStudentId(0);
+    }
+  };
+
+  useEffect(() => {
     fetchStudents();
   }, []);
 
 
   const [students, setStudents] = useState<IWebinarRegistration[]>([]);
   const handleLogout = () => {
-    console.log('Logging out...');
-    window.location.href = '/';
+    handleLogoutDialogOpen();
   };
 
   const handleAddStudent = () => {
   };
 
-  const handleEditStudent =() =>{
+  const handleEditStudent = () => {
 
   }
 
   const handleDeleteStudent = () => {
   };
+
+  const handleMarkAsPaid = (id: number) => {
+    setSelectedStudentId(id);
+    setPaymentDialogOpen(true);
+  }
 
   return (
     <div className="min-h-screen bg-gray-50 text-gray-800 flex flex-col">
@@ -143,6 +194,7 @@ const Dashboard: React.FC = ({ }) => {
             onAdd={handleAddStudent}
             onEdit={handleEditStudent}
             onDelete={handleDeleteStudent}
+            onMarkAsPaid={handleMarkAsPaid}
           />
         )}
       </main>
@@ -150,6 +202,22 @@ const Dashboard: React.FC = ({ }) => {
       <footer className="bg-gray-200 text-gray-600 text-center py-4 select-none">
         &copy; {new Date().getFullYear()} Admin Dashboard. All rights reserved.
       </footer>
+
+      <Dialog
+        isOpen={isLogoutDialogOpen}
+        title="Log out"
+        message="Are you sure you want to Logout?"
+        onCancel={handleLogoutCancel}
+        onConfirm={handleLogoutConfirm}
+      />
+
+      <Dialog
+        isOpen={isPaymentDialogOpen}
+        title="Confirm Payment"
+        message="Are you sure you want to Mark as paid?"
+        onCancel={handlePaymentCancel}
+        onConfirm={handlePaymentConfirm}
+      />
     </div>
   );
 };

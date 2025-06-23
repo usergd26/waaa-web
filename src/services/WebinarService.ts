@@ -11,6 +11,17 @@ export const WebinarService = {
         } catch (error: any) {
 
         }
+    },
+
+    async addPayment(id: number): Promise<any> {
+        try {
+            const response = await interceptor.patch(`/addpayment?id=${id}`, {
+                withCredentials: true
+            });
+            return response.data;
+        } catch (error: any) {
+
+        }
     }
 
 };
