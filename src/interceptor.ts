@@ -3,7 +3,7 @@ import type { AxiosInstance, AxiosError } from 'axios';
 const api: AxiosInstance = axios.create({
   baseURL : 'https://waaa-api.onrender.com',
   //baseURL: 'https://localhost:44388',
-  timeout: 10000,
+  timeout: 20000,
 });
 
 api.interceptors.response.use(
