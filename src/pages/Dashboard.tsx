@@ -12,7 +12,7 @@ const StudentManagement: React.FC<{
   onMarkAsPaid: (id: number) => void;
 }> = ({ students, onAdd, onMarkAsPaid }) => (
   <div className="bg-white p-6 rounded-lg max-w-5xl mx-auto mt-8 shadow-md overflow-x-auto">
-    <h2 className="text-2xl mb-6 text-gray-800 font-semibold">Student Management</h2>
+    <h2 className="text-2xl mb-6 text-gray-800 font-semibold">Manage registrations</h2>
     <table className="min-w-full table-auto border-collapse border border-gray-300 text-gray-800">
       <thead className="bg-gray-200">
         <tr>
@@ -79,7 +79,7 @@ const StudentManagement: React.FC<{
       className="mt-6 bg-green-600 hover:bg-green-700 transition-colors text-white px-6 py-3 rounded font-semibold"
       aria-label="Add new student"
     >
-      Add Student
+      New registration
     </button>
   </div>
 );
@@ -95,17 +95,20 @@ const Dashboard: React.FC = ({ }) => {
   const [isPaymentDialogOpen, setPaymentDialogOpen] = useState(false);
   const [selectedStudentId, setSelectedStudentId] = useState<number>(0);
 
+  const [loading, setLoading] = useState(false);
+
+
   const handleLogoutDialogOpen = () => setLogoutDialogOpen(true);
   const handleLogoutCancel = () => setLogoutDialogOpen(false);
 
-    const fetchStudents = async () => {
-      try {
-        const response = await WebinarService.getWebinarRegistrations();
-        setStudents(response);
-      } catch (error) {
-        console.error('Error fetching webinar registrations:', error);
-      }
-    };
+  const fetchStudents = async () => {
+    try {
+      const response = await WebinarService.getWebinarRegistrations();
+      setStudents(response);
+    } catch (error) {
+      console.error('Error fetching webinar registrations:', error);
+    }
+  };
 
 
   const handleLogoutConfirm = () => {
@@ -116,6 +119,7 @@ const Dashboard: React.FC = ({ }) => {
   const handlePaymentCancel = () => setPaymentDialogOpen(false);
   const handlePaymentConfirm = async () => {
     try {
+      setLoading(true);
       await WebinarService.addPayment(selectedStudentId);
       await fetchStudents();
     }
@@ -125,6 +129,7 @@ const Dashboard: React.FC = ({ }) => {
     finally {
       setPaymentDialogOpen(false);
       setSelectedStudentId(0);
+      setLoading(false);
     }
   };
 
@@ -218,6 +223,12 @@ const Dashboard: React.FC = ({ }) => {
         onCancel={handlePaymentCancel}
         onConfirm={handlePaymentConfirm}
       />
+
+      {loading && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+          <div className="w-12 h-12 border-4 border-white border-t-blue-500 rounded-full animate-spin"></div>
+        </div>
+      )}
     </div>
   );
 };

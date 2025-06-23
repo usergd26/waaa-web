@@ -376,7 +376,7 @@ const Home = () => {
                         </div>
                         <div className="hidden md:block">
                             <Link to="/login" className="bg-gradient-to-r from-pink-500 to-blue-500 text-white px-4 py-2 rounded-md font-medium hover:from-pink-600 hover:to-blue-600 transition-all duration-300 cursor-pointer !rounded-button whitespace-nowrap mx-2">
-                                Login
+                                Admin Panel
                             </Link>
                             <button className="bg-gradient-to-r from-pink-500 to-blue-500 text-white px-4 py-2 rounded-md font-medium hover:from-pink-600 hover:to-blue-600 transition-all duration-300 cursor-pointer !rounded-button whitespace-nowrap mx-2">
                                 Get Started
