@@ -2,6 +2,8 @@ import React, { useEffect, useState } from 'react';
 import type { IWebinarRegistration } from '../interfaces/Webinar';
 import { WebinarService } from '../services/WebinarService';
 import Dialog from '../components/Dialog';
+import { AuthService } from '../services/AuthService';
+import { useNavigate } from 'react-router-dom';
 
 const StudentManagement: React.FC<{
 
@@ -89,6 +91,8 @@ const NAV_ITEMS = ['Student Management'] as const;
 type NavItem = typeof NAV_ITEMS[number];
 
 const Dashboard: React.FC = ({ }) => {
+  const navigate = useNavigate();
+
   const [currentView, setCurrentView] = useState<NavItem>('Student Management');
 
   const [isLogoutDialogOpen, setLogoutDialogOpen] = useState(false);
@@ -115,9 +119,11 @@ const Dashboard: React.FC = ({ }) => {
   };
 
 
-  const handleLogoutConfirm = () => {
-    window.location.href = '/';
+  const handleLogoutConfirm = async () => {
+    await AuthService.logout()
     setLogoutDialogOpen(false);
+    navigate('/');
+
   };
 
   const handlePaymentCancel = () => setPaymentDialogOpen(false);
