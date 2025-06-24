@@ -8,6 +8,7 @@ export const AuthService = {
       const response = await interceptor.post('/login', credentials, {
         withCredentials: true
       });
+      localStorage.setItem('token', response.data);
       return response.data;
     } catch (error: any) {
       console.error('Login failed:', error);
@@ -16,9 +17,9 @@ export const AuthService = {
   },
 
 
-  logout() {
+  async logout() {
+    localStorage.removeItem('token');
   },
-
   async isAdminUser(): Promise<boolean> {
     const response = await interceptor.get('/my-roles', {
       withCredentials: true
@@ -26,5 +27,4 @@ export const AuthService = {
 
     return response.data.roles.includes('admin');
   }
-
 };
