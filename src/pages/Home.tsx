@@ -36,7 +36,7 @@ const Home = () => {
     });
 
 
-   
+
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
@@ -47,7 +47,7 @@ const Home = () => {
             email: formData.email,
             phone: formData.phone,
         };
-        
+
         try {
             const response = await interceptor.post('/blueprint', payload);
             if (response.status !== 200) throw new Error('API request failed');
@@ -234,39 +234,39 @@ const Home = () => {
         prefix?: string;
         suffix?: string;
         start?: number;
-      };
-      
-      const Counter = ({
+    };
+
+    const Counter = ({
         end,
         duration = 2000,
         prefix = "",
         suffix = "",
         start = 0,
-      }: CounterProps) => {
+    }: CounterProps) => {
         // ✅ Now the type is being used
         const [count, setCount] = useState(start);
         const startTimeRef = useRef<number | null>(null);
-      
+
         useEffect(() => {
-          const animate = (timestamp: number) => {
-            if (!startTimeRef.current) startTimeRef.current = timestamp;
-            const progress = timestamp - startTimeRef.current;
-            const percentage = Math.min(progress / duration, 1);
-            const current = Math.floor(start + percentage * (end - start));
-            setCount(current);
-            if (percentage < 1) {
-              requestAnimationFrame(animate);
-            }
-          };
-          requestAnimationFrame(animate);
-          return () => {
-            startTimeRef.current = null;
-          };
+            const animate = (timestamp: number) => {
+                if (!startTimeRef.current) startTimeRef.current = timestamp;
+                const progress = timestamp - startTimeRef.current;
+                const percentage = Math.min(progress / duration, 1);
+                const current = Math.floor(start + percentage * (end - start));
+                setCount(current);
+                if (percentage < 1) {
+                    requestAnimationFrame(animate);
+                }
+            };
+            requestAnimationFrame(animate);
+            return () => {
+                startTimeRef.current = null;
+            };
         }, [end, duration, start]);
-      
+
         return <span>{prefix}{count}{suffix}</span>;
-      };
-      
+    };
+
     return (
         <div className="min-h-screen bg-black text-white overflow-x-hidden">
             {/* Floating Elements */}
@@ -491,73 +491,73 @@ const Home = () => {
                                 You dream it. We build it. Let's make the future happen — together at WAAA.
                             </p>
                             <div className="flex flex-col gap-6">
-            {/* Button */}
-            <div className="flex flex-wrap gap-4">
-                <button
-                    onClick={() => {
-                        setShowForm(true);
-                        setTimeout(() => {
-                            const element = document.getElementById('schedule-call');
-                            element?.scrollIntoView({ behavior: 'smooth' });
-                        }, 100);
-                    }}
-                    className="bg-gradient-to-r from-pink-500 to-blue-500 text-white px-6 py-3 rounded-md font-medium hover:from-pink-600 hover:to-blue-600 transition-all duration-300 text-lg cursor-pointer !rounded-button whitespace-nowrap group relative overflow-hidden"
-                >
-                    <span className="relative z-10">Schedule Free Call</span>
-                    <div className="absolute inset-0 bg-white opacity-0 group-hover:opacity-20 transition-opacity duration-300"></div>
-                </button>
-            </div>
+                                {/* Button */}
+                                <div className="flex flex-wrap gap-4">
+                                    <button
+                                        onClick={() => {
+                                            setShowForm(true);
+                                            setTimeout(() => {
+                                                const element = document.getElementById('schedule-call');
+                                                element?.scrollIntoView({ behavior: 'smooth' });
+                                            }, 100);
+                                        }}
+                                        className="bg-gradient-to-r from-pink-500 to-blue-500 text-white px-6 py-3 rounded-md font-medium hover:from-pink-600 hover:to-blue-600 transition-all duration-300 text-lg cursor-pointer !rounded-button whitespace-nowrap group relative overflow-hidden"
+                                    >
+                                        <span className="relative z-10">Schedule Free Call</span>
+                                        <div className="absolute inset-0 bg-white opacity-0 group-hover:opacity-20 transition-opacity duration-300"></div>
+                                    </button>
+                                </div>
 
-            {/* Conditional Form */}
-            {showForm && (
-                <div id="schedule-call" className="mt-8 p-6 backdrop-blur-lg bg-black bg-opacity-30 rounded-2xl border border-white border-opacity-20">
-                    <h3 className="text-xl font-bold mb-4 text-white">Schedule a Free Call & Get Our Blueprint</h3>
+                                {/* Conditional Form */}
+                                {showForm && (
+                                    <div id="schedule-call" className="mt-8 p-6 backdrop-blur-lg bg-black bg-opacity-30 rounded-2xl border border-white border-opacity-20">
+                                        <h3 className="text-xl font-bold mb-4 text-white">Schedule a Free Call & Get Our Blueprint</h3>
 
-                    {loading && (
-                        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-                            <div className="w-12 h-12 border-4 border-white border-t-blue-500 rounded-full animate-spin"></div>
-                        </div>
-                    )}
+                                        {loading && (
+                                            <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+                                                <div className="w-12 h-12 border-4 border-white border-t-blue-500 rounded-full animate-spin"></div>
+                                            </div>
+                                        )}
 
-                    <form onSubmit={handleSubmit}>
-                        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-4">
-                            <input
-                                type="text"
-                                name="name"
-                                placeholder="Your Name"
-                                value={formData.name}
-                                onChange={handleChange}
-                                className="w-full px-4 py-2 bg-black bg-opacity-50 border border-white border-opacity-20 rounded-md text-white focus:outline-none focus:ring-2 focus:ring-pink-500 focus:border-transparent"
-                                required
-                            />
-                            <input
-                                type="email"
-                                name="email"
-                                placeholder="Your Email"
-                                value={formData.email}
-                                onChange={handleChange}
-                                className="w-full px-4 py-2 bg-black bg-opacity-50 border border-white border-opacity-20 rounded-md text-white focus:outline-none focus:ring-2 focus:ring-pink-500 focus:border-transparent"
-                                required
-                            />
-                        </div>
-                        <input
-                            type="tel"
-                            name="phone"
-                            placeholder="Phone Number"
-                            value={formData.phone}
-                            onChange={handleChange}
-                            className="w-full px-4 py-2 mb-4 bg-black bg-opacity-50 border border-white border-opacity-20 rounded-md text-white focus:outline-none focus:ring-2 focus:ring-pink-500 focus:border-transparent"
-                        />
-                        <button
-                            type="submit"
-                            className="w-full bg-gradient-to-r from-pink-500 to-blue-500 text-white px-6 py-3 rounded-md font-medium hover:from-pink-600 hover:to-blue-600 transition-all duration-300 cursor-pointer !rounded-button whitespace-nowrap"
-                        >
-                            Get Free Blueprint
-                        </button>
-                    </form>
-                </div>
-            )}
-        </div>
+                                        <form onSubmit={handleSubmit}>
+                                            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-4">
+                                                <input
+                                                    type="text"
+                                                    name="name"
+                                                    placeholder="Your Name"
+                                                    value={formData.name}
+                                                    onChange={handleChange}
+                                                    className="w-full px-4 py-2 bg-black bg-opacity-50 border border-white border-opacity-20 rounded-md text-white focus:outline-none focus:ring-2 focus:ring-pink-500 focus:border-transparent"
+                                                    required
+                                                />
+                                                <input
+                                                    type="email"
+                                                    name="email"
+                                                    placeholder="Your Email"
+                                                    value={formData.email}
+                                                    onChange={handleChange}
+                                                    className="w-full px-4 py-2 bg-black bg-opacity-50 border border-white border-opacity-20 rounded-md text-white focus:outline-none focus:ring-2 focus:ring-pink-500 focus:border-transparent"
+                                                    required
+                                                />
+                                            </div>
+                                            <input
+                                                type="tel"
+                                                name="phone"
+                                                placeholder="Phone Number"
+                                                value={formData.phone}
+                                                onChange={handleChange}
+                                                className="w-full px-4 py-2 mb-4 bg-black bg-opacity-50 border border-white border-opacity-20 rounded-md text-white focus:outline-none focus:ring-2 focus:ring-pink-500 focus:border-transparent"
+                                            />
+                                            <button
+                                                type="submit"
+                                                className="w-full bg-gradient-to-r from-pink-500 to-blue-500 text-white px-6 py-3 rounded-md font-medium hover:from-pink-600 hover:to-blue-600 transition-all duration-300 cursor-pointer !rounded-button whitespace-nowrap"
+                                            >
+                                                Get Free Blueprint
+                                            </button>
+                                        </form>
+                                    </div>
+                                )}
+                            </div>
                         </div>
                         <div className="hidden md:block relative">
                             {/* This div is intentionally left empty as the hero background image covers this area */}
@@ -677,27 +677,27 @@ const Home = () => {
                                 Today, we've grown into a team of 32 experts, serving clients globally and delivering cutting-edge solutions that drive real business results. Our commitment to innovation and excellence has earned us recognition as a leader in the digital transformation space.
                             </p>
                             <div className="flex items-center gap-8">
-      <div className="text-center">
-        <div className="text-3xl font-bold text-pink-500 mb-2">
-          <Counter end={200} start={80} suffix="+" />
-        </div>
-        <p className="text-sm text-gray-400">Projects Completed</p>
-      </div>
+                                <div className="text-center">
+                                    <div className="text-3xl font-bold text-pink-500 mb-2">
+                                        <Counter end={200} start={80} suffix="+" />
+                                    </div>
+                                    <p className="text-sm text-gray-400">Projects Completed</p>
+                                </div>
 
-      <div className="text-center">
-        <div className="text-3xl font-bold text-blue-500 mb-2">
-          <Counter end={80} start={50} suffix="+" />
-        </div>
-        <p className="text-sm text-gray-400">Global Clients</p>
-      </div>
+                                <div className="text-center">
+                                    <div className="text-3xl font-bold text-blue-500 mb-2">
+                                        <Counter end={80} start={50} suffix="+" />
+                                    </div>
+                                    <p className="text-sm text-gray-400">Global Clients</p>
+                                </div>
 
-      <div className="text-center">
-        <div className="text-3xl font-bold text-purple-500 mb-2">
-          <Counter end={15} start={10} suffix="+" />
-        </div>
-        <p className="text-sm text-gray-400">Industry Awards</p>
-      </div>
-    </div>
+                                <div className="text-center">
+                                    <div className="text-3xl font-bold text-purple-500 mb-2">
+                                        <Counter end={15} start={10} suffix="+" />
+                                    </div>
+                                    <p className="text-sm text-gray-400">Industry Awards</p>
+                                </div>
+                            </div>
                         </div>
                         <div className="relative">
                             <div className="absolute -inset-4 bg-gradient-to-r from-pink-500 to-blue-500 rounded-2xl opacity-30 blur-lg"></div>
@@ -797,25 +797,25 @@ const Home = () => {
                         {[{
                             name: 'Ravi Mehta',
                             position: 'Founder, MehtaTech Solutions',
-                            image: 'https://readdy.ai/api/search-image?query=professional%20headshot%20of%20confident%20female%20CEO%20with%20modern%20business%20attire%2C%20neutral%20expression%2C%20studio%20lighting%2C%20clean%20background%2C%20high%20quality%20portrait%2C%20professional%20photography%2C%20realistic&width=200&height=200&seq=testimonial-1&orientation=squarish',
+                            image: 'https://readdy.ai/api/search-image?query=professional%20headshot%20of%20confident%20male%20CTO%20with%20modern%20business%20attire%2C%20neutral%20expression%2C%20studio%20lighting%2C%20clean%20background%2C%20high%20quality%20portrait%2C%20professional%20photography%2C%20realistic&width=200&height=200&seq=testimonial-2&orientation=squarish',
                             quote: 'Working with WAAA has been a game-changer. Their team understood our vision from day one and built a scalable product that exceeded expectations. Their turnaround time and support are top-notch. We consider them an extension of our core team now.',
                         },
                         {
                             name: 'Ananya Desai',
                             position: 'Marketing Head, Skynest Naturals',
-                            image: 'https://readdy.ai/api/search-image?query=professional%20headshot%20of%20confident%20male%20CTO%20with%20modern%20business%20attire%2C%20neutral%20expression%2C%20studio%20lighting%2C%20clean%20background%2C%20high%20quality%20portrait%2C%20professional%20photography%2C%20realistic&width=200&height=200&seq=testimonial-2&orientation=squarish',
+                            image: 'https://readdy.ai/api/search-image?query=professional%20headshot%20of%20confident%20female%20CEO%20with%20modern%20business%20attire%2C%20neutral%20expression%2C%20studio%20lighting%2C%20clean%20background%2C%20high%20quality%20portrait%2C%20professional%20photography%2C%20realistic&width=200&height=200&seq=testimonial-1&orientation=squarish',
                             quote: "WAAA didn’t just deliver a website—they brought our brand to life online. Their design sense is intuitive, and the user experience they crafted has directly boosted our online sales. Highly recommended for any brand that wants to stand out digitally.",
                         },
                         {
                             name: 'Vikram Sharma',
                             position: 'COO, EduCraft Learning',
-                            image: 'https://readdy.ai/api/search-image?query=professional%20headshot%20of%20confident%20female%20marketing%20director%20with%20modern%20business%20attire%2C%20neutral%20expression%2C%20studio%20lighting%2C%20clean%20background%2C%20high%20quality%20portrait%2C%20professional%20photography%2C%20realistic&width=200&height=200&seq=testimonial-3&orientation=squarish',
+                            image: 'https://images.unsplash.com/photo-1527980965255-d3b416303d12?fit=crop&w=200&h=200',
                             quote: 'We needed a custom LMS built in record time, and WAAA delivered. Their technical skills, proactive updates, and post-launch support were stellar. Thanks to them, our platform now serves 10,000+ students seamlessly.',
                         },
                         {
                             name: 'Emily Thompson',
                             position: 'Director of Operations, MapleWell Co.',
-                            image: 'https://images.unsplash.com/photo-1527980965255-d3b416303d12?fit=crop&w=200&h=200',
+                            image: 'https://readdy.ai/api/search-image?query=professional%20headshot%20of%20confident%20female%20marketing%20director%20with%20modern%20business%20attire%2C%20neutral%20expression%2C%20studio%20lighting%2C%20clean%20background%2C%20high%20quality%20portrait%2C%20professional%20photography%2C%20realistic&width=200&height=200&seq=testimonial-3&orientation=squarish',
                             quote: 'Finding a reliable offshore tech partner isn’t easy—but WAAA nailed it. Their professionalism, clear communication, and quality of code were exceptional. We’ve worked with other agencies before, but WAAA stands out for their integrity and commitment.',
                         }].map((testimonial, index) => (
                             <motion.div
@@ -856,17 +856,17 @@ const Home = () => {
                 initial="hidden"
                 whileInView="visible"
                 viewport={{ once: true, amount: 0.3 }}
-            // transition={{ duration: 0.6 }}
-            // variants={fadeInUp}
             >
                 <div className="absolute inset-0 z-0">
                     <div className="w-full h-full bg-gradient-to-br from-[#121212] to-[#1f1f1f]">
                         <div className="absolute inset-0 bg-black bg-opacity-80 backdrop-blur-sm 
-              [background-image:repeating-linear-gradient(0deg,rgba(255,255,255,0.015)_1px,transparent_1px),repeating-linear-gradient(90deg,rgba(255,255,255,0.015)_1px,transparent_1px)] 
-              [background-size:20px_20px]">
+        [background-image:repeating-linear-gradient(0deg,rgba(255,255,255,0.015)_1px,transparent_1px),
+        repeating-linear-gradient(90deg,rgba(255,255,255,0.015)_1px,transparent_1px)] 
+        [background-size:20px_20px]">
                         </div>
                     </div>
                 </div>
+
                 <div className="container mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
                     <div className="text-center mb-16">
                         <h2 className="text-3xl md:text-4xl font-bold mb-4 text-gray-100">Get In Touch</h2>
@@ -874,7 +874,9 @@ const Home = () => {
                             Ready to start your next project? Contact us today for a free consultation
                         </p>
                     </div>
+
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-6xl mx-auto">
+                        {/* Contact Form */}
                         <div className="backdrop-blur-lg bg-black bg-opacity-20 p-8 rounded-2xl border border-white border-opacity-10">
                             <h3 className="text-2xl font-bold mb-6 text-gray-100">Send Us a Message</h3>
                             <form>
@@ -898,6 +900,7 @@ const Home = () => {
                                         />
                                     </div>
                                 </div>
+
                                 <div className="mb-6">
                                     <label htmlFor="subject" className="block text-sm font-medium text-gray-300 mb-2">Subject</label>
                                     <input
@@ -907,6 +910,7 @@ const Home = () => {
                                         placeholder="Project Inquiry"
                                     />
                                 </div>
+
                                 <div className="mb-6">
                                     <label htmlFor="message" className="block text-sm font-medium text-gray-300 mb-2">Message</label>
                                     <textarea
@@ -916,34 +920,36 @@ const Home = () => {
                                         placeholder="Tell us about your project..."
                                     ></textarea>
                                 </div>
+
                                 <button
                                     type="submit"
-                                    className="w-full bg-gradient-to-r from-pink-500 to-blue-500 text-white px-6 py-3 rounded-md font-medium hover:from-pink-600 hover:to-blue-600 transition-all duration-300 cursor-pointer !rounded-button whitespace-nowrap"
+                                    className="w-full bg-gradient-to-r from-pink-500 to-blue-500 text-white px-6 py-3 rounded-md font-medium hover:from-pink-600 hover:to-blue-600 transition-all duration-300 cursor-pointer"
                                 >
                                     Send Message
                                 </button>
                             </form>
                         </div>
+
+                        {/* Contact Info */}
                         <div className="backdrop-blur-lg bg-black bg-opacity-20 p-8 rounded-2xl border border-white border-opacity-10">
                             <h3 className="text-2xl font-bold mb-6 text-gray-100">Contact Information</h3>
                             <div className="space-y-6">
                                 <div className="flex items-start">
-                                    <div className="w-10 h-10 rounded-full bg-gradient-to-r from-pink-500 to-blue-500 flex items-center justify-center mr-4 flex-shrink-0">
-                                        <i className="fas fa-map-marker-alt"></i>
+                                    <div className="w-10 h-10 rounded-full bg-gradient-to-r from-pink-500 to-blue-500 flex items-center justify-center mr-4">
+                                        <i className="fas fa-map-marker-alt text-white"></i>
                                     </div>
                                     <div>
                                         <h4 className="text-lg font-medium mb-1 text-gray-100">Our Locations</h4>
-                                        <p className="text-gray-300">
-                                            Bangalore
-                                        </p>
+                                        <p className="text-gray-300">Bangalore</p>
                                     </div>
                                 </div>
+
                                 <div className="flex items-start">
-                                    <div className="w-10 h-10 rounded-full bg-gradient-to-r from-pink-500 to-blue-500 flex items-center justify-center mr-4 flex-shrink-0">
-                                        <i className="fas fa-phone-alt"></i>
+                                    <div className="w-10 h-10 rounded-full bg-gradient-to-r from-pink-500 to-blue-500 flex items-center justify-center mr-4">
+                                        <i className="fas fa-phone-alt text-white"></i>
                                     </div>
                                     <div>
-                                        <h4 className="text-lg font-medium mb-1 text-gray-100 text-gray-100">Phone Numbers</h4>
+                                        <h4 className="text-lg font-medium mb-1 text-gray-100">Phone Numbers</h4>
                                         <ul className="text-gray-300">
                                             <li>
                                                 India: <a href="tel:+917086665218" className="hover:underline">+91 708-666-5218</a>
@@ -954,9 +960,10 @@ const Home = () => {
                                         </ul>
                                     </div>
                                 </div>
+
                                 <div className="flex items-start">
-                                    <div className="w-10 h-10 rounded-full bg-gradient-to-r from-pink-500 to-blue-500 flex items-center justify-center mr-4 flex-shrink-0">
-                                        <i className="fas fa-envelope"></i>
+                                    <div className="w-10 h-10 rounded-full bg-gradient-to-r from-pink-500 to-blue-500 flex items-center justify-center mr-4">
+                                        <i className="fas fa-envelope text-white"></i>
                                     </div>
                                     <div>
                                         <h4 className="text-lg font-medium mb-1 text-gray-100">Email Address</h4>
@@ -964,16 +971,26 @@ const Home = () => {
                                     </div>
                                 </div>
                             </div>
+
+                            {/* Social Media Icons */}
                             <div className="mt-8">
                                 <h4 className="text-lg font-medium mb-4 text-gray-100">Follow Us</h4>
                                 <div className="flex space-x-4">
-                                    {['fa-facebook-f', 'fa-twitter', 'fa-instagram', 'fa-linkedin-in', 'fa-github'].map((icon, index) => (
+                                    {[
+                                        { icon: 'fa-facebook-f', url: 'https://facebook.com/waaa.in' },
+                                        { icon: 'fa-twitter', url: 'https://twitter.com/waaa_in' },
+                                        { icon: 'fa-instagram', url: 'https://www.instagram.com/waaa.in_?igsh=ZTZ1cXBxOXRydms2&utm_source=qr' },
+                                        { icon: 'fa-linkedin-in', url: 'https://linkedin.com/company/waaa-in' },
+                                        { icon: 'fa-github', url: 'https://github.com/waaa-in' }
+                                    ].map((item, index) => (
                                         <a
                                             key={index}
-                                            href="https://www.instagram.com/waaa.in_?igsh=ZTZ1cXBxOXRydms2&utm_source=qr"
-                                            className="w-10 h-10 rounded-full bg-black bg-opacity-50 border border-white border-opacity-20 flex items-center justify-center hover:bg-gradient-to-r hover:from-pink-500 hover:to-blue-500 transition-all duration-300 cursor-pointer"
+                                            href={item.url}
+                                            target="_blank"
+                                            rel="noopener noreferrer"
+                                            className="w-10 h-10 rounded-full bg-black bg-opacity-50 border border-white border-opacity-20 flex items-center justify-center hover:bg-gradient-to-r hover:from-pink-500 hover:to-blue-500 transition-all duration-300"
                                         >
-                                            <i className={`fab ${icon}`}></i>
+                                            <i className={`fab ${item.icon} text-white`}></i>
                                         </a>
                                     ))}
                                 </div>
@@ -982,6 +999,8 @@ const Home = () => {
                     </div>
                 </div>
             </motion.section>
+
+
             {/* Footer */}
             <footer className="py-12 bg-white border-t border-gray-200">
                 <div className="container mx-auto px-4 sm:px-6 lg:px-8">
