@@ -110,9 +110,9 @@ const Login: React.FC = () => {
             </div>
           </div>
           <h1 className="text-3xl font-bold bg-gradient-to-r from-white to-slate-300 bg-clip-text text-transparent mb-2">
-            TechNova Pro
+            WAAA
           </h1>
-          <p className="text-slate-400">Secure Access Portal</p>
+          <p className="text-slate-400">Admin Login Portal</p>
         </div>
 
         <div className="relative">
