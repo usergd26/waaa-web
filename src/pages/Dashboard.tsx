@@ -8,7 +8,6 @@ import {
   Calendar,
   TrendingUp,
   Clock,
-  User,
   Edit2,
   LogOut,
   Settings,
