@@ -12,7 +12,6 @@ export const AuthService = {
       return response.data;
     } catch (error: any) {
       console.error('Login failed:', error);
-      alert('login failed');
     }
   },
 

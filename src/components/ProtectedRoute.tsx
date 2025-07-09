@@ -17,9 +17,10 @@ const ProtectedRoute = ({ children }: Props) => {
         setAuthorized(false);
         return;
       }
-
-      const isAdmin = await AuthService.isAdminUser();
+      else{
+        const isAdmin = await AuthService.isAdminUser();
       setAuthorized(isAdmin);
+      }
     };
 
     checkAuth();
