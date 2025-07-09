@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   Users,
   BarChart3,
@@ -37,6 +37,9 @@ import {
 } from 'chart.js';
 import { AuthService } from '../services/AuthService';
 import { useNavigate } from 'react-router-dom';
+import type { IWebinarRegistration } from '../interfaces/Webinar';
+import { WebinarService } from '../services/WebinarService';
+import Dialog from '../components/Dialog';
 
 // Register Chart.js components
 ChartJS.register(
@@ -51,6 +54,8 @@ ChartJS.register(
 
 const Dashboard = () => {
   const navigate = useNavigate();
+  const [isPaymentDialogOpen, setPaymentDialogOpen] = useState(false);
+  const [students, setStudents] = useState<IWebinarRegistration[]>([]);
   const [activeRoute, setActiveRoute] = useState('analytics');
   const [showUserMenu, setShowUserMenu] = useState(false);
   const [showProfileEdit, setShowProfileEdit] = useState(false);
@@ -59,6 +64,9 @@ const Dashboard = () => {
   const [activeWebinarTab, setActiveWebinarTab] = useState('current');
   const [showEventForm, setShowEventForm] = useState(false);
   const [sidebarCollapsed, setSidebarCollapsed] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const [selectedStudentId, setSelectedStudentId] = useState<number>(0);
+
   const [events, setEvents] = useState([
     {
       id: 1,
@@ -99,15 +107,6 @@ const Dashboard = () => {
     { title: "All Time Earning", amount: 1250000, color: 'from-emerald-500 to-teal-500', icon: BarChart3, change: '+45%' },
   ];
 
-  const leadsData = [
-    { id: 1, name: 'John Smith', contact: '9876543210', email: 'john@example.com', date: '2025-07-01', webinarName: 'AI Fundamentals', status: 'Active' },
-    { id: 2, name: 'Sarah Johnson', contact: '9876543211', email: 'sarah@example.com', date: '2025-07-02', webinarName: 'Data Science Career', status: 'Pending' },
-    { id: 3, name: 'Mike Chen', contact: '9876543212', email: 'mike@example.com', date: '2025-07-03', webinarName: 'ML Basics', status: 'Active' },
-    { id: 4, name: 'Lisa Davis', contact: '9876543213', email: 'lisa@example.com', date: '2025-07-04', webinarName: 'AI Fundamentals', status: 'Inactive' },
-    { id: 5, name: 'Alex Rodriguez', contact: '9876543214', email: 'alex@example.com', date: '2025-07-05', webinarName: 'Data Science Career', status: 'Active' },
-    { id: 6, name: 'Emma Wilson', contact: '9876543215', email: 'emma@example.com', date: '2025-07-06', webinarName: 'ML Basics', status: 'Pending' },
-  ];
-
   const handleWhatsAppContact = (contactNumber: string) => {
     if (/^\d{10}$/.test(contactNumber)) {
       const whatsappUrl = `https://wa.me/91${contactNumber}`;
@@ -116,6 +115,45 @@ const Dashboard = () => {
       alert('Invalid contact number. Please ensure it is a 10-digit number.');
     }
   };
+
+  const handleMarkAsPaid = (id: number) => {
+    setSelectedStudentId(id);
+    setPaymentDialogOpen(true);
+  }
+
+  const handlePaymentCancel = () => setPaymentDialogOpen(false);
+  const handlePaymentConfirm = async () => {
+    try {
+      setLoading(true);
+      await WebinarService.addPayment(selectedStudentId);
+      await fetchStudents();
+    }
+    catch (error) {
+      console.log(error)
+    }
+    finally {
+      setPaymentDialogOpen(false);
+      setSelectedStudentId(0);
+      setLoading(false);
+    }
+  };
+
+  const fetchStudents = async () => {
+    try {
+      //setLoading(true);
+      const response = await WebinarService.getWebinarRegistrations();
+      setStudents(response);
+    } catch (error) {
+      console.error('Error fetching webinar registrations:', error);
+    }
+    finally {
+      //setLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    fetchStudents();
+  }, []);
 
   const handleProfileSave = (e: React.FormEvent) => {
     e.preventDefault();
@@ -295,10 +333,10 @@ const Dashboard = () => {
                 </div>
                 <button
                   className="bg-gradient-to-r from-blue-600 to-purple-600 text-white px-6 py-2 rounded-xl hover:from-blue-700 hover:to-purple-700 transition-all duration-200 transform hover:scale-105"
-                  aria-label="Add Lead"
+                  aria-label="Add Registration"
                 >
                   <Plus className="h-5 w-5 inline mr-2" aria-hidden="true" />
-                  Add Lead
+                  Add Registration
                 </button>
               </div>
             </div>
@@ -307,47 +345,61 @@ const Dashboard = () => {
                 <table className="w-full">
                   <thead className="bg-gradient-to-r from-gray-50 to-gray-100">
                     <tr>
-                      <th className="px-6 py-4 text-left text-sm font-semibold text-gray-700">Name</th>
-                      <th className="px-6 py-4 text-left text-sm font-semibold text-gray-700">Contact</th>
-                      <th className="px-6 py-4 text-left text-sm font-semibold text-gray-700">Email</th>
-                      <th className="px-6 py-4 text-left text-sm font-semibold text-gray-700">Date</th>
-                      <th className="px-6 py-4 text-left text-sm font-semibold text-gray-700">Webinar</th>
-                      <th className="px-6 py-4 text-left text-sm font-semibold text-gray-700">Payment status</th>
-                      <th className="px-6 py-4 text-left text-sm font-semibold text-gray-700">Actions</th>
+                      <th className="px-6 py-4 text-center text-sm font-semibold text-gray-700">Name</th>
+                      <th className="px-6 py-4 text-center text-sm font-semibold text-gray-700">Contact</th>
+                      <th className="px-6 py-4 text-center text-sm font-semibold text-gray-700">Email</th>
+                      {/* <th className="px-6 py-4 text-left text-sm font-semibold text-gray-700">Date</th> */}
+                      <th className="px-6 py-4 text-center text-sm font-semibold text-gray-700">Webinar</th>
+                      <th className="px-6 py-4 text-center text-sm font-semibold text-gray-700">Payment status</th>
+                      <th className="px-6 py-4 text-center text-sm font-semibold text-gray-700">Actions</th>
                     </tr>
                   </thead>
                   <tbody className="divide-y divide-gray-100">
-                    {leadsData.map((lead) => (
-                      <tr key={lead.id} className="hover:bg-gray-50 transition-colors duration-200">
-                        <td className="px-6 py-4">
+                    {students.map((student) => (
+                      <tr key={student.registrationId} className="hover:bg-gray-50 transition-colors duration-200">
+                        <td className="px-6 text-center py-4">
                           <div className="flex items-center space-x-3">
                             <div className="w-10 h-10 bg-gradient-to-r from-blue-500 to-purple-500 rounded-full flex items-center justify-center text-white font-semibold">
-                              {lead.name.split(' ').map(n => n[0]).join('')}
+                              {student.name.split(' ').map(n => n[0]).join('')}
                             </div>
-                            <span className="text-sm font-medium text-gray-900">{lead.name}</span>
+                            <span className="text-sm font-medium text-gray-900">{student.name}</span>
                           </div>
                         </td>
-                        <td className="px-6 py-4 text-sm text-gray-600">{lead.contact}</td>
-                        <td className="px-6 py-4 text-sm text-gray-600">{lead.email}</td>
-                        <td className="px-6 py-4 text-sm text-gray-600">{lead.date}</td>
-                        <td className="px-6 py-4 text-sm text-gray-600">{lead.webinarName}</td>
-                        <td className="px-6 py-4">
-                          <span className={`px-3 py-1 rounded-full text-xs font-medium ${lead.status === 'Active' ? 'bg-emerald-100 text-emerald-800' :
-                            lead.status === 'Pending' ? 'bg-yellow-100 text-yellow-800' :
+                        <td className="px-6 text-center py-4 text-sm text-gray-600">{student.phone}</td>
+                        <td className="px-6 text-center py-4 text-sm text-gray-600">{student.email}</td>
+                        {/* <td className="px-6 py-4 text-sm text-gray-600">{student.date}</td> */}
+                        <td className="px-6 text-center py-4 text-sm text-gray-600">{student.webinarName}</td>
+                        <td className="px-6 text-center py-4">
+                          <span className={`px-3 py-1 rounded-full text-xs font-medium ${student.paymentStatus ? 'bg-emerald-100 text-emerald-800' :
+                            !student.paymentStatus ? 'bg-yellow-100 text-yellow-800' :
                               'bg-red-100 text-red-800'
                             }`}>
-                            {lead.status}
+                            {student.paymentStatus ? 'Done' : 'Pending'}
                           </span>
                         </td>
-                        <td className="px-6 py-4">
+                        <td className="px-6 text-center py-4 flex gap-2">
                           <button
-                            onClick={() => handleWhatsAppContact(lead.contact)}
+                            onClick={() => handleWhatsAppContact(student.phone)}
                             className="bg-gradient-to-r from-green-500 to-emerald-500 hover:from-green-600 hover:to-emerald-600 text-white p-2 rounded-full transition-all duration-200 transform hover:scale-110"
-                            aria-label={`Contact ${lead.name} via WhatsApp`}
+                            aria-label={`Contact ${student.name} via WhatsApp`}
                             title="Contact via WhatsApp"
                           >
                             <MessageCircle className="h-4 w-4" aria-hidden="true" />
                           </button>
+
+                          {!student.paymentStatus && (<button
+                            onClick={() => handleMarkAsPaid(student.registrationId)}
+                            className={`w-full py-2 px-1 rounded-xl font-medium transition-all duration-200 transform hover:scale-105 ${'bg-gradient-to-r from-emerald-600 to-teal-600 text-white shadow-lg'}`}
+
+                            aria-label={'Paid'}
+                          >
+                            {
+                              <span className="flex items-center justify-center space-x-2">
+                                <CheckCircle className="h-5 w-5" aria-hidden="true" />
+                                <span>Paid</span>
+                              </span>
+                            }
+                          </button>)}
                         </td>
                       </tr>
                     ))}
@@ -355,6 +407,18 @@ const Dashboard = () => {
                 </table>
               </div>
             </div>
+            <Dialog
+              isOpen={isPaymentDialogOpen}
+              title="Confirm Payment"
+              message="Are you sure you want to Mark as paid?"
+              onCancel={handlePaymentCancel}
+              onConfirm={handlePaymentConfirm}
+            />
+            {loading && (
+              <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+                <div className="w-12 h-12 border-4 border-white border-t-blue-500 rounded-full animate-spin"></div>
+              </div>
+            )}
           </div>
         );
 
