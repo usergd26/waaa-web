@@ -1048,7 +1048,7 @@ const Home = () => {
         <ul className="space-y-2">
           {[
             { name: 'About Us', path: '#' },
-            { name: 'Our Team', path: '/our-team' }, // ✅ now goes to career page
+            { name: 'Our Team', path: '/our-team' },
             { name: 'Careers', path: '/careers' },
             { name: 'Blog', path: '#' },
             { name: 'Contact Us', path: '#' },
