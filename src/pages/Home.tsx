@@ -17,6 +17,7 @@ import * as echarts from 'echarts';
 
 
 
+
 const Home = () => {
 
     const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -1002,88 +1003,112 @@ const Home = () => {
 
 
             {/* Footer */}
-            <footer className="py-12 bg-white border-t border-gray-200">
-                <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-                    <div className="grid grid-cols-1 md:grid-cols-4 gap-8 mb-8">
-                        <div>
-                            <h3 className="text-2xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-pink-500 to-blue-500 mb-4">
-                                Waaa
-                            </h3>
-                            <p className="text-gray-600 mb-4">
-                                Creating ultra-modern digital experiences with cutting-edge technology and immersive design.
-                            </p>
-                            <div className="flex space-x-4">
-                                {['fa-facebook-f', 'fa-twitter', 'fa-instagram', 'fa-linkedin-in'].map((icon, index) => (
-                                    <a
-                                        key={index}
-                                        href="#"
-                                        className="w-8 h-8 rounded-full bg-gray-100 flex items-center justify-center hover:bg-gradient-to-r hover:from-pink-500 hover:to-blue-500 hover:text-white transition-all duration-300"
-                                    >
-                                        <i className={`fab ${icon} text-sm`}></i>
-                                    </a>
-                                ))}
-                            </div>
-                        </div>
+<footer className="py-12 bg-white border-t border-gray-200">
+  <div className="container mx-auto px-4 sm:px-6 lg:px-8">
+    <div className="grid grid-cols-1 md:grid-cols-4 gap-8 mb-8">
 
-                        <div>
-                            <h4 className="text-lg font-bold text-black mb-4">Services</h4>
-                            <ul className="space-y-2">
-                                {['Web Development', 'API Integration', 'Automation', 'AI Integration'].map((item, index) => (
-                                    <li key={index}>
-                                        <a href="#" className="text-gray-700 hover:text-black transition-colors duration-300 cursor-pointer">
-                                            {item}
-                                        </a>
-                                    </li>
-                                ))}
-                            </ul>
-                        </div>
+      {/* Brand & Social */}
+      <div>
+        <h3 className="text-2xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-pink-500 to-blue-500 mb-4">
+          Waaa
+        </h3>
+        <p className="text-gray-600 mb-4">
+          Creating ultra-modern digital experiences with cutting-edge technology and immersive design.
+        </p>
+        <div className="flex space-x-4">
+          {['fa-facebook-f', 'fa-twitter', 'fa-instagram', 'fa-linkedin-in'].map((icon, index) => (
+            <a
+              key={index}
+              href="#"
+              className="w-8 h-8 rounded-full bg-gray-100 flex items-center justify-center hover:bg-gradient-to-r hover:from-pink-500 hover:to-blue-500 hover:text-white transition-all duration-300"
+            >
+              <i className={`fab ${icon} text-sm`}></i>
+            </a>
+          ))}
+        </div>
+      </div>
 
-                        <div>
-                            <h4 className="text-lg font-bold text-black mb-4">Company</h4>
-                            <ul className="space-y-2">
-                                {['About Us', 'Our Team', 'Careers', 'Blog', 'Contact Us', 'Privacy Policy'].map((item, index) => (
-                                    <li key={index}>
-                                        <a href="#" className="text-gray-700 hover:text-black transition-colors duration-300 cursor-pointer">
-                                            {item}
-                                        </a>
-                                    </li>
-                                ))}
-                            </ul>
-                        </div>
+      {/* Services */}
+      <div>
+        <h4 className="text-lg font-bold text-black mb-4">Services</h4>
+        <ul className="space-y-2">
+          {['Web Development', 'API Integration', 'Automation', 'AI Integration'].map((item, index) => (
+            <li key={index}>
+              <span className="text-gray-700 hover:text-black transition-colors duration-300 cursor-pointer">
+                {item}
+              </span>
+            </li>
+          ))}
+        </ul>
+      </div>
 
-                        <div>
-                            <h4 className="text-lg font-bold text-black mb-4">Newsletter</h4>
-                            <p className="text-gray-600 mb-4">
-                                Subscribe to our newsletter to receive updates on our latest projects and technologies.
-                            </p>
-                            <form className="flex">
-                                <input
-                                    type="email"
-                                    placeholder="Your email"
-                                    className="flex-grow px-4 py-2 bg-white border border-gray-300 rounded-l-md text-black placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-pink-500 focus:border-transparent transition-all duration-300"
-                                />
-                                <button
-                                    type="submit"
-                                    className="bg-gradient-to-r from-pink-500 to-blue-500 text-white px-4 py-2 rounded-r-md font-medium hover:from-pink-600 hover:to-blue-600 transition-all duration-300 cursor-pointer"
-                                >
-                                    <i className="fas fa-paper-plane"></i>
-                                </button>
-                            </form>
-                        </div>
-                    </div>
+      {/* ✅ Company Section with React Router Links */}
+      <div>
+        <h4 className="text-lg font-bold text-black mb-4">Company</h4>
+        <ul className="space-y-2">
+          {[
+            { name: 'About Us', path: '#' },
+            { name: 'Our Team', path: '/our-team' },
+            { name: 'Careers', path: '/careers' },
+            { name: 'Blog', path: '#' },
+            { name: 'Contact Us', path: '#' },
+            { name: 'Privacy Policy', path: '#' },
+          ].map((item, index) => (
+            <li key={index}>
+              {item.path !== '#' ? (
+                <Link
+                  to={item.path}
+                  className="text-gray-700 hover:text-black transition-colors duration-300 cursor-pointer"
+                >
+                  {item.name}
+                </Link>
+              ) : (
+                <span className="text-gray-700 hover:text-black transition-colors duration-300 cursor-pointer">
+                  {item.name}
+                </span>
+              )}
+            </li>
+          ))}
+        </ul>
+      </div>
 
-                    <div className="pt-8 border-t border-gray-200 text-center">
-                        <p className="text-gray-600">
-                            &copy; {new Date().getFullYear()} Waaa. All rights reserved.
-                        </p>
-                        <div className="flex justify-center space-x-4 mt-4">
-                            {['fa-cc-visa', 'fa-cc-mastercard', 'fa-cc-paypal', 'fa-cc-apple-pay'].map((icon, index) => (
-                                <i key={index} className={`fab ${icon} text-2xl text-gray-500`}></i>
-                            ))}
-                        </div>
-                    </div>
-                </div>
-            </footer>
+      {/* Newsletter */}
+      <div>
+        <h4 className="text-lg font-bold text-black mb-4">Newsletter</h4>
+        <p className="text-gray-600 mb-4">
+          Subscribe to our newsletter to receive updates on our latest projects and technologies.
+        </p>
+        <form className="flex">
+          <input
+            type="email"
+            placeholder="Your email"
+            className="flex-grow px-4 py-2 bg-white border border-gray-300 rounded-l-md text-black placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-pink-500 focus:border-transparent transition-all duration-300"
+          />
+          <button
+            type="submit"
+            className="bg-gradient-to-r from-pink-500 to-blue-500 text-white px-4 py-2 rounded-r-md font-medium hover:from-pink-600 hover:to-blue-600 transition-all duration-300 cursor-pointer"
+          >
+            <i className="fas fa-paper-plane"></i>
+          </button>
+        </form>
+      </div>
+
+    </div>
+
+    {/* Bottom Credits */}
+    <div className="pt-8 border-t border-gray-200 text-center">
+      <p className="text-gray-600">
+        &copy; {new Date().getFullYear()} Waaa. All rights reserved.
+      </p>
+      <div className="flex justify-center space-x-4 mt-4">
+        {['fa-cc-visa', 'fa-cc-mastercard', 'fa-cc-paypal', 'fa-cc-apple-pay'].map((icon, index) => (
+          <i key={index} className={`fab ${icon} text-2xl text-gray-500`}></i>
+        ))}
+      </div>
+    </div>
+  </div>
+</footer>
+
 
             {/* AI Chat Bot */}
 
