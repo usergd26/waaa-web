@@ -7,7 +7,7 @@ import Courses from './pages/Courses';
 import Home from './pages/Home';
 import ProtectedRoute from './components/ProtectedRoute';
 import OurTeam from './pages/OurTeam';
-import CareersPage from './pages/careers';
+import CareersPage from './pages/Careers';
 
 const App: React.FC = () => {
   return (
