@@ -4,7 +4,7 @@ import type { AxiosInstance, AxiosError } from 'axios';
 const api: AxiosInstance = axios.create({
   baseURL: 'https://waaa-api.onrender.com',
   //baseURL: 'https://localhost:44388',
-  timeout: 20000,
+  timeout: 30000,
 });
 
 // 👉 Request Interceptor: Set Authorization header from localStorage
