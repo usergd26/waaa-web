@@ -272,22 +272,25 @@ const Home = () => {
         <div className="min-h-screen bg-black text-white overflow-x-hidden">
             {/* Floating Elements */}
             <div className="fixed inset-0 pointer-events-none z-0">
-                {floatingElements.map((el, index) => (
-                    <div
-                        key={index}
-                        className="absolute rounded-full"
-                        style={{
-                            left: `${el.x}px`,
-                            top: `${el.y}px`,
-                            width: `${el.size}px`,
-                            height: `${el.size}px`,
-                            background: `radial-gradient(circle, rgba(255,0,204,${el.opacity}) 0%, rgba(51,51,255,${el.opacity}) 100%)`,
-                            transform: 'translate(-50%, -50%)',
-                            filter: 'blur(8px)',
-                        }}
-                    />
-                ))}
-            </div>
+    {floatingElements.map((el, index) => (
+        <div
+            key={index}
+            className="absolute rounded-full"
+            style={{
+                left: `${el.x}px`,
+                top: `${el.y}px`,
+                width: `${el.size}px`,
+                height: `${el.size}px`,
+                // To make the circles invisible:
+background: `radial-gradient(circle, rgba(0,0,0,0) 0%, rgba(0,0,0,0) 100%)`
+,
+                transform: 'translate(-50%, -50%)',
+                filter: 'blur(8px)',
+            }}
+        />
+    ))}
+</div>
+
 
             {/* Navigation */}
             <nav className="fixed top-0 left-0 w-full z-[100] backdrop-blur-md bg-black bg-opacity-20 border-b border-white border-opacity-10">
@@ -376,13 +379,19 @@ const Home = () => {
                             </button>
                         </div>
                         <div className="hidden md:block">
-                            <Link to="/login" className="bg-gradient-to-r from-pink-500 to-blue-500 text-white px-4 py-2 rounded-md font-medium hover:from-pink-600 hover:to-blue-600 transition-all duration-300 cursor-pointer !rounded-button whitespace-nowrap mx-2">
-                                Admin Panel
-                            </Link>
-                            <button className="bg-gradient-to-r from-pink-500 to-blue-500 text-white px-4 py-2 rounded-md font-medium hover:from-pink-600 hover:to-blue-600 transition-all duration-300 cursor-pointer !rounded-button whitespace-nowrap mx-2">
-                                Get Started
-                            </button>
-                        </div>
+    <Link
+        to="/login"
+        className="bg-black text-white px-4 py-2 rounded-md font-medium hover:bg-gray-800 transition-all duration-300 cursor-pointer !rounded-button whitespace-nowrap mx-2"
+    >
+        Admin Panel
+    </Link>
+    <button
+        className="bg-black text-white px-4 py-2 rounded-md font-medium hover:bg-gray-800 transition-all duration-300 cursor-pointer !rounded-button whitespace-nowrap mx-2"
+    >
+        Get Started
+    </button>
+</div>
+
 
                     </div>
                 </div>
@@ -483,7 +492,7 @@ const Home = () => {
 
                 <div className="container mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
                     <div className="grid md:grid-cols-2 gap-8 items-center">
-                        <div className="backdrop-blur-lg bg-black bg-opacity-20 p-8 rounded-2xl border border-white border-opacity-10">
+                        <div className="bg-transparent p-8 rounded-2xl border border-white border-opacity-10">
                             <h1 className="text-4xl md:text-5xl lg:text-6xl font-extrabold mb-4">
                                 <span className="block bg-clip-text text-transparent bg-gradient-to-r from-pink-500 to-blue-500 animate-pulse">We Build To Thrive</span>
                                 <span className="block mt-2 text-white">25 Years In The Future</span>
@@ -593,50 +602,52 @@ const Home = () => {
                                 image: webdev
                             },
                             {
-                                title: 'API Integration',
+                                title: 'Software Development',
                                 description: 'Seamless integration of third-party APIs and development of custom API solutions.',
                                 icon: 'fa-plug',
                                 image: api
                             },
                             {
-                                title: 'Automation',
+                                title: 'AI Integration & Automation',
                                 description: 'Streamline your workflows with intelligent automation solutions that save time and resources.',
                                 icon: 'fa-robot',
                                 image: automation
                             },
                             {
-                                title: 'AI Integration',
+                                title: 'Robotics',
                                 description: 'Leverage the power of artificial intelligence to enhance your products and services.',
                                 icon: 'fa-brain',
                                 image: 'https://readdy.ai/api/search-image?query=artificial%20intelligence%20visualization%20with%20neural%20network%2C%20digital%20brain%20concept%20with%20glowing%20connections%2C%20futuristic%20AI%20technology%2C%20purple%20and%20blue%20color%20scheme%2C%20dark%20tech%20background%2C%20professional%203D%20rendering%20with%20depth%20of%20field&width=600&height=400&seq=ai-1&orientation=landscape'
                             }
                         ].map((service, index) => (
                             <div
-                                key={index}
-                                className="bg-white rounded-2xl shadow-md overflow-hidden group hover:shadow-lg transition-all duration-500 transform hover:-translate-y-2"
-                            >
-                                <div className="h-48 overflow-hidden">
+  key={index}
+  className="bg-black text-white rounded-2xl shadow-md overflow-hidden group hover:shadow-lg transition-all duration-500 transform hover:-translate-y-2"
+>
+  <div className="h-48 overflow-hidden">
+    <img
+      src={service.image}
+      alt={service.title}
+      className="w-full h-60 object-cover rounded-lg object-top transition-transform duration-700 group-hover:scale-110"
+    />
+  </div>
+  <div className="p-6">
+    <div className="flex items-center mb-4">
+      <div className="w-10 h-10 rounded-full bg-gradient-to-r from-pink-500 to-blue-500 flex items-center justify-center mr-3">
+        <i className={`fas ${service.icon}`}></i>
+      </div>
+      <h3 className="text-xl font-bold text-white">{service.title}</h3>
+    </div>
+    <p className="text-gray-300 mb-4">{service.description}</p>
+    <a
+      href="#"
+      className="inline-flex items-center text-blue-400 hover:text-blue-300 transition-colors duration-300 cursor-pointer"
+    >
+      Learn more <i className="fas fa-arrow-right ml-2"></i>
+    </a>
+  </div>
+</div>
 
-                                    <img
-                                        src={service.image}
-                                        alt={service.title}
-                                        className="w-full h-60 object-cover rounded-lg object-top transition-transform duration-700 group-hover:scale-110"
-                                    />
-
-                                </div>
-                                <div className="p-6">
-                                    <div className="flex items-center mb-4">
-                                        <div className="w-10 h-10 rounded-full bg-gradient-to-r from-pink-500 to-blue-500 flex items-center justify-center mr-3">
-                                            <i className={`fas ${service.icon}`}></i>
-                                        </div>
-                                        <h3 className="text-xl font-bold text-gray-900">{service.title}</h3>
-                                    </div>
-                                    <p className="text-gray-600 mb-4">{service.description}</p>
-                                    <a href="#" className="inline-flex items-center text-blue-600 hover:text-blue-500 transition-colors duration-300 cursor-pointer">
-                                        Learn more <i className="fas fa-arrow-right ml-2"></i>
-                                    </a>
-                                </div>
-                            </div>
                         ))}
                     </div>
                 </div>
@@ -666,7 +677,7 @@ const Home = () => {
                             From startup to industry leader: Our story of innovation and success
                         </p>
                     </div>
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-12 items-center mb-20">
+                   ` <div className="grid grid-cols-1 md:grid-cols-2 gap-12 items-center mb-20">
                         <div className="backdrop-blur-lg bg-black bg-opacity-20 p-8 rounded-2xl border border-white border-opacity-10">
                             <h3 className="text-2xl font-bold mb-6 bg-clip-text text-transparent bg-gradient-to-r from-pink-500 to-blue-500">
                                 Transforming Ideas into Reality
@@ -701,15 +712,15 @@ const Home = () => {
                             </div>
                         </div>
                         <div className="relative">
-                            <div className="absolute -inset-4 bg-gradient-to-r from-pink-500 to-blue-500 rounded-2xl opacity-30 blur-lg"></div>
-                            <div className="relative backdrop-blur-lg bg-black bg-opacity-20 p-8 rounded-2xl border border-white border-opacity-10">
-                                <h3 className="text-2xl font-bold mb-6 text-gray-100">Success Story: TechVision Transformation</h3>
+                            <div className="absolute -inset-4 bg-black rounded-2xl opacity-30 blur-lg"></div>
+                            <div className="relative backdrop-blur-none bg-black bg-opacity-20 p-8 rounded-2xl border border-white border-opacity-10">
+                                <h3 className="text-2xl font-bold mb-6 text-gray-300">Success Story: TechVision Transformation</h3>
                                 <div className="mb-6">
-                                    <img
+                                    {/* <img
                                         src="https://www.sthapatigroup.com/wp-content/uploads/2020/08/DSC_0062-scaled-e1598250429198.jpg"
                                         alt="Success Story"
                                         className="w-full h-48 object-cover rounded-lg mb-6"
-                                    />
+                                    /> */}
                                     <p className="text-gray-300 mb-4">
                                         One of our earliest clients, a small business owner struggling to manage a growing workload, approached us to build a website and automate their daily reports. Within 2 weeks, we built a dynamic platform that not only handled their sales tracking but also saved them 5+ hours a day through smart automation. Today, they've scaled their business 3x — and we're still just one message away for anything they need.That's WAAA. Always there. Always evolving. Always delivering.
                                     </p>
@@ -733,7 +744,7 @@ const Home = () => {
                                     <div className="flex justify-end">
                                         <button className="bg-gradient-to-r from-pink-500 to-blue-500 text-white px-6 py-3 rounded-md font-medium hover:from-pink-600 hover:to-blue-600 transition-all duration-300 cursor-pointer !rounded-button whitespace-nowrap">
                                             Read Full Case Study
-                                        </button>
+                                        </button>`
                                     </div>
                                 </div>
                             </div>
@@ -769,8 +780,6 @@ const Home = () => {
                 </div>
             </motion.section>
             { }
-
-
             {/* Testimonials Section */}
             <motion.section
                 id="testimonials"
@@ -1053,6 +1062,8 @@ const Home = () => {
             { name: 'Blog', path: '#' },
             { name: 'Contact Us', path: '#' },
             { name: 'Privacy Policy', path: '#' },
+            { name: 'Portfolio', path: '/portfolio'},
+
           ].map((item, index) => (
             <li key={index}>
               {item.path !== '#' ? (

@@ -8,6 +8,7 @@ import Home from './pages/Home';
 import ProtectedRoute from './components/ProtectedRoute';
 import OurTeam from './pages/OurTeam';
 import CareersPage from './pages/Careers';
+import Portfolio from './pages/Portfolio';
 
 const App: React.FC = () => {
   return (
@@ -20,6 +21,7 @@ const App: React.FC = () => {
         <Route path="/Courses" element={<Courses />} />
           <Route path="/our-team" element={<OurTeam />} />
         <Route path="/careers" element={<CareersPage />} />
+        <Route path="/portfolio" element={<Portfolio />}/>
         {/* Protected Routes */}
         <Route
           path="/dashboard"
